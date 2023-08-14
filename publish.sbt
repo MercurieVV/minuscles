@@ -1,5 +1,7 @@
 ThisBuild / organization := "io.github.mercurievv.minuscles"
 ThisBuild / organizationHomepage := Some(url("https://github.com/MercurieVV/"))
+ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
+sonatypeProfileName := "io.github.mercurievv"
 
 ThisBuild / scmInfo := Some(
   ScmInfo(

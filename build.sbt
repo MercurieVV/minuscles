@@ -1,11 +1,14 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "2.13.11"
+//sonatypeProfileName := "io.github.mercurievv"
 
 val commonSettings = Seq(
   organization := "io.github.mercurievv.minuscles",
   crossScalaVersions := Seq("2.13.11", "3.3.0"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
+  publishTo := sonatypePublishToBundle.value
+
 )
 lazy val root = (project in file("."))
   .settings(
@@ -13,13 +16,14 @@ lazy val root = (project in file("."))
     publish := {},
     publishLocal := {},
     publishArtifact := false,
+    publishTo := None,
   ).aggregate(monocleTuples)
 
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
   .settings(
     name := "tuples_plens",
-    version := "0.1.1",
+    version := "0.1.2",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     Compile / sourceGenerators += Def.task {

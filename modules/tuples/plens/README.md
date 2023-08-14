@@ -14,6 +14,7 @@ Example:
 import io.github.mercurievv.minuscles.tuples.plens.implicits._
 import monocle.syntax.all._
 
-val a = (true, 5, "pep")   // (true,  5 , "pep")
-a.at(2).modify(_.toString) // (true, "5", "pep")
+val a = (true, 5, "pep")           // (true,  5 , "pep")
+val b = a.at(2).modify(_.toString) // (true, "5", "pep")
+val c = a.mod(2)(_.toString)       // (true, "5", "pep")
 ```
