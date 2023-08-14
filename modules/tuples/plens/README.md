@@ -6,7 +6,7 @@ Scala 2.13 and 3 supported.
 
 Include in project:
 ```scala
-libraryDependencies += "io.github.mercurievv.minuscles" %% "tuples_plens" % "0.1.1"
+libraryDependencies += "io.github.mercurievv.minuscles" %% "tuples_plens" % "0.1.2"
 ```
 
 Example:
