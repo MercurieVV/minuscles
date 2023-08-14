@@ -61,7 +61,7 @@ object TuplesPLensGenerator {
   def opsGenerator(airity: Int, elNr: Int, As: String, ABs: String): String = {
     s"""
       |implicit class Tuple_${airity}_${elNr}_PlensOps[$As, B](tuple: Tuple$airity[$As]) {
-      |  def at[I <: $elNr]: AppliedPLens[Tuple$airity[$As], Tuple$airity[$ABs], A$elNr, B] = tuple_${airity}_${elNr}_plensApplied(tuple)
+      |  def at(i: $elNr): AppliedPLens[Tuple$airity[$As], Tuple$airity[$ABs], A$elNr, B] = tuple_${airity}_${elNr}_plensApplied(tuple)
       |}""".stripMargin
   }
 }

@@ -19,7 +19,7 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
   .settings(
     name := "tuples_plens",
-    version := "0.1.0",
+    version := "0.1.1",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     Compile / sourceGenerators += Def.task {
