@@ -1,4 +1,4 @@
-package com.github.mercurievv.minuscles.tuples.plens.generator
+package io.github.mercurievv.minuscles.tuples.plens.generator
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths, StandardOpenOption}
@@ -37,7 +37,7 @@ object TuplesPLensGenerator {
       .map((opsGenerator _).tupled).mkString
 
     s"""
-      |package com.github.mercurievv.minuscles.tuples.plens
+      |package io.github.mercurievv.minuscles.tuples.plens
       |
       |import monocle.syntax.AppliedPLens
       |import monocle.PLens
