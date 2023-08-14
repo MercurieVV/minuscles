@@ -4,8 +4,7 @@ This project use Monocle
 
 Include in project:
 ```scala
-resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "io.github.MercurieVV" % "Repo" % "???"
+libraryDependencies += "io.github.mercurievv" %% "tuples_plens" % "0.1.0"
 ```
 
 Example:
