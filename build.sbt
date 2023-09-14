@@ -1,16 +1,15 @@
-ThisBuild / scalaVersion := "2.13.11"
-//sonatypeProfileName := "io.github.mercurievv"
-ThisBuild / scalacOptions ++= {
-  CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((3, _)) => Seq("-Ykind-projector:underscores")
-    case Some((2, 12 | 13)) => Seq("-Xsource:3")
-  }
-}
 val commonSettings = Seq(
+  scalaVersion := "2.13.11",
   organization := "io.github.mercurievv.minuscles",
   crossScalaVersions := Seq("2.13.11", "3.3.1"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
+  scalacOptions ++= {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((3, _))       => Seq("-Ykind-projector:underscores")
+      case Some((2, 12 | 13)) => Seq("-Xsource:3")
+    }
+  },
 )
 lazy val root = (project in file("."))
   .settings(
@@ -44,7 +43,7 @@ lazy val conversions = (project in file("modules/conversions"))
   .settings(commonSettings)
   .settings(
     name := "conversions",
-    version := "0.1.0",
+    version := "0.1.1",
     isSnapshot := false,
     description := "Micro library to modify things generic way",
   )
@@ -52,4 +51,4 @@ lazy val conversions = (project in file("modules/conversions"))
     libraryDependencies += "org.typelevel" %% "cats-core"     % "2.9.0",
     libraryDependencies += "dev.optics"    %% "monocle-macro" % "3.2.0" % Test,
   )
-  .dependsOn(monocleTuples % "compile->test")
+  .dependsOn(monocleTuples)
