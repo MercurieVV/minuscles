@@ -7,6 +7,7 @@ val commonSettings = Seq(
   crossScalaVersions := Seq("2.13.14", "3.4.2"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
+  sonatypeProfileName := "io.github.mercurievv",
   scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _))  => Seq("-Ykind-projector:underscores")
@@ -14,11 +15,12 @@ val commonSettings = Seq(
     }
   },
 )
-lazy val minuscles = (project in file("."))
+lazy val root = (project in file("."))
   .settings(
     name := "minuscles",
     publish := {},
     publishLocal := {},
+    publish / skip := true,
     publishArtifact := false,
     publishTo := None,
   )

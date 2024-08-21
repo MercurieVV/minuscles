@@ -14,13 +14,13 @@ package object semiauto {
       ctx.construct(v => v.typeclass.withFieldsNames(t + v.label))
     }
 
-/*
+    /*
     def split[T](ctx: SealedTrait[FieldsNames, T]): FieldsNames[T] = ???
 /*      (value: T) =>
         ctx.split(value) { sub =>
           sub.typeclass.withFieldsNames(sub.cast(value))
         }*/
-*/
+     */
 
     implicit def gen[T]: FieldsNames[T] = macro Magnolia.gen[T]
   }

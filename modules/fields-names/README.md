@@ -5,7 +5,7 @@ FieldsNames is scala (2.13, 3) nano library. It's typeclass and derivator, which
 ## Installation
 
 ```sbt
-libraryDependencies += "com.softwaremill.magnolia1_2" %% "magnolia" % version
+libraryDependencies += "com.softwaremill.magnolia1_2" %% "magnolia" % "0.1.0"
 ```
 
 ## Use case

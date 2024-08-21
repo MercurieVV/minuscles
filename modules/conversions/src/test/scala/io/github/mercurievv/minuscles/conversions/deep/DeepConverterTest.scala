@@ -8,8 +8,8 @@ object DeepConverterTest {
   import implicits._
 
   type TestType[F[_]] = Option[Vector[F[(Int, F[String], List[Boolean])]]]
-  type InputType  = TestType[Vector] // Option[Vector[Vector[(Int, Vector[String], List[Boolean])]]]
-  type OutputType = TestType[List]   // Option[List[List[(Int, List[String], List[Boolean])]]]
+  type InputType      = TestType[Vector] // Option[Vector[Vector[(Int, Vector[String], List[Boolean])]]]
+  type OutputType     = TestType[List]   // Option[List[List[(Int, List[String], List[Boolean])]]]
   val vect: InputType = Option(Vector(Vector((5, Vector("String"), List(true)))))
   val lst: OutputType = vect.deepConvert[OutputType]
 
