@@ -1,25 +1,28 @@
+ThisBuild / scalaVersion := "2.13.14"
+ThisBuild / crossScalaVersions := Seq("2.13.14", "3.4.2")
+
 val commonSettings = Seq(
-  scalaVersion := "2.13.11",
+  scalaVersion := "2.13.14",
   organization := "io.github.mercurievv.minuscles",
-  crossScalaVersions := Seq("2.13.11", "3.3.1"),
+  crossScalaVersions := Seq("2.13.14", "3.4.2"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
   scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((3, _))       => Seq("-Ykind-projector:underscores")
-      case Some((2, 12 | 13)) => Seq("-Xsource:3")
+      case Some((3, _))  => Seq("-Ykind-projector:underscores")
+      case Some((2, 13)) => Seq("-Xsource:3")
     }
   },
 )
-lazy val root = (project in file("."))
+lazy val minuscles = (project in file("."))
   .settings(
-    name := "root",
+    name := "minuscles",
     publish := {},
     publishLocal := {},
     publishArtifact := false,
     publishTo := None,
   )
-  .aggregate(monocleTuples, conversions)
+  .aggregate(monocleTuples, conversions, fieldsNames)
 
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
@@ -37,6 +40,30 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   )
   .settings(
     libraryDependencies += "dev.optics" %% "monocle-core" % "3.2.0"
+  )
+
+lazy val fieldsNames = (project in file("modules/fields-names"))
+  .settings(commonSettings)
+  .settings(
+    name := "fields_names",
+    version := "0.1.0",
+    isSnapshot := false,
+    description := "Micro library generate object containing its fields names",
+  )
+  .settings(
+    libraryDependencies ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 13)) => Seq("org.scala-lang" % "scala-reflect" % scalaVersion.value)
+        case _             => Seq.empty
+      }
+    },
+    libraryDependencies ++= {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, 13)) => List("com.softwaremill.magnolia1_2" %% "magnolia" % "1.1.10")
+        case Some((3, _))  => List("com.softwaremill.magnolia1_3" %% "magnolia" % "1.3.7")
+      }
+    },
+    libraryDependencies += "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test,
   )
 
 lazy val conversions = (project in file("modules/conversions"))
