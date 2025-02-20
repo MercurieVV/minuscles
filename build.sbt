@@ -24,7 +24,7 @@ lazy val root = (project in file("."))
     publishArtifact := false,
     publishTo := None,
   )
-  .aggregate(monocleTuples, conversions, fieldsNames)
+  .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses)
 
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
@@ -66,6 +66,21 @@ lazy val fieldsNames = (project in file("modules/fields-names"))
       }
     },
     libraryDependencies += "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test,
+  )
+
+lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasses"))
+  .settings(commonSettings)
+  .settings(
+    name := "shapeless3-typeclasses",
+    version := "0.1.0",
+    isSnapshot := false,
+    description := "Typeclasses for shapeless 3",
+    crossScalaVersions := Seq("3.4.2"),
+    scalaVersion := "3.4.2",
+  )
+  .settings(
+    libraryDependencies += "org.typelevel" %% "shapeless3-deriving" % "3.4.3",
+    libraryDependencies += "org.typelevel" %% "cats-core" % "2.13.0"
   )
 
 lazy val conversions = (project in file("modules/conversions"))
