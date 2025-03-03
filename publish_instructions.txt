@@ -1,0 +1,2 @@
+shapeless3typeclasses / publishSigned
+sonatypeBundleRelease
