@@ -7,8 +7,10 @@ import cats.Applicative
 
 trait TuplesTransformersLaws[InpTuple <: Tuple] {
 
-  inline def logIdentity(inpTuple: InpTuple): Prop =
-    inpTuple.tFlatten == inpTuple
+  inline def idempotency(inpTuple: InpTuple): Prop =
+    val flatten = inpTuple.toFlatten
+    val nested = inpTuple.toNested
+    flatten.toNested == nested && nested.toFlatten == flatten
 }
 
 object TuplesTransformersLaws {

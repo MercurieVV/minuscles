@@ -5,10 +5,10 @@ import org.typelevel.discipline.Laws
 
 class TuplesTransformersTests extends Laws {
   def rules: RuleSet = new DefaultRuleSet(
-    name = "Logger Laws",
+    name = "TuplesTransformers Laws",
     parent = None,
-    "log identity" -> Prop.forAll { (inp: (Int, (Double), String)) =>
-      TuplesTransformersLaws.apply.logIdentity(inp)
+    "TuplesTransformers idempotency" -> Prop.forAll { (inp: (Int, (Double, Float), String)) =>
+      TuplesTransformersLaws[(Int, (Double, Float), String)].idempotency(inp)
     }
   )
 }
