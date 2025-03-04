@@ -1,10 +1,10 @@
-ThisBuild / scalaVersion := "2.13.14"
-ThisBuild / crossScalaVersions := Seq("2.13.14", "3.4.2")
+ThisBuild / scalaVersion := "2.13.16"
+ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
 
 val commonSettings = Seq(
-  scalaVersion := "2.13.14",
+  scalaVersion := "2.13.16",
   organization := "io.github.mercurievv.minuscles",
-  crossScalaVersions := Seq("2.13.14", "3.4.2"),
+  crossScalaVersions := Seq("2.13.16", "3.4.2"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
   sonatypeProfileName := "io.github.mercurievv",
@@ -26,6 +26,8 @@ lazy val root = (project in file("."))
   )
   .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses)
 
+
+//todo use tuplesTransformers. This lib should apply tuplesTransformers for monocle only
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
   .settings(
@@ -42,6 +44,22 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   )
   .settings(
     libraryDependencies += "dev.optics" %% "monocle-core" % "3.2.0"
+  )
+
+lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
+  .settings(commonSettings)
+  .settings(
+    name := "tuples_transformers",
+    version := "0.1.0",
+    isSnapshot := false,
+    description := "Micro library to modify tuples elements and their types",
+    crossScalaVersions := Seq("3.4.2"),
+    scalaVersion := "3.4.2",
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
+      "org.typelevel" %% "discipline-munit" % "2.0.0" % Test,
+      "org.typelevel" %% "cats-laws" % "2.13.0" % Test
+    )
   )
 
 lazy val fieldsNames = (project in file("modules/fields-names"))
