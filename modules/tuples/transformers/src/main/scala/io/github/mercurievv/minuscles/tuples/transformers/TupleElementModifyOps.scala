@@ -46,10 +46,3 @@ def flatToNestedRuntime[T <: Tuple](t: T): Tuple =
 inline def nested[T <: Tuple](t: T): FlatToNested[Flatten[T]] = {
   flatToNested(flatten(t))
 }
-
-type Test = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)))
-
-//val test: Test = ???
-//val gr: Tuple1[Int] = ???//flatten[Test](???)
-//val fr = flatToNested(gr)
-//val ntd: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = nested(test)
