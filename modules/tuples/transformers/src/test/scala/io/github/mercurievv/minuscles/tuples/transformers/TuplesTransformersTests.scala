@@ -2,6 +2,7 @@ package io.github.mercurievv.minuscles.tuples.transformers
 
 import org.scalacheck.Prop
 import org.typelevel.discipline.Laws
+import io.github.mercurievv.minuscles.tuples.transformers.all.*
 
 class TuplesTransformersTests extends Laws {
   type TestType = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)))
