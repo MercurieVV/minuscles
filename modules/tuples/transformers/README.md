@@ -1,20 +1,22 @@
-# Micro library to modify tuples elements and their types
+# Micro library to modify tuples structure and their types
 
-This project use Monocle
-
-Scala 2.13 and 3 supported.
+Scala 3 supported.
 
 Include in project:
 ```scala
-libraryDependencies += "io.github.mercurievv.minuscles" %% "tuples_plens" % "0.1.2"
+libraryDependencies += "io.github.mercurievv.minuscles" %% "tuples_transformers" % "0.1.0"
 ```
 
 Example:
 ```scala
-import io.github.mercurievv.minuscles.tuples.plens.implicits._
-import monocle.syntax.all._
+import io.github.mercurievv.minuscles.tuples.transformers.all.*
 
-val a = (true, 5, "pep")           // (true,  5 , "pep")
-val b = a.at(2).modify(_.toString) // (true, "5", "pep")
-val c = a.mod(2)(_.toString)       // (true, "5", "pep")
+val inp: ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte))) = ??? //don't care about value, but its working
+
+//following tranformations:
+val flatten: (Int, Long, String, Boolean, Double, Char, Float, Byte) = inp.toFlatten
+val flattenToNested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = flatToNested(gr) 
+//flatToNested method works correctly only with flattened tuples, but in such cases it should save some CPU
+val nested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = inp.toNested
+
 ```

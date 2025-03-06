@@ -4,6 +4,7 @@ import cats.syntax.functor._ // For F.map
 import org.scalacheck.Prop
 import org.typelevel.discipline.Laws
 import cats.Applicative
+import io.github.mercurievv.minuscles.tuples.transformers.all.*
 
 trait TuplesTransformersLaws[InpTuple <: Tuple] {
 

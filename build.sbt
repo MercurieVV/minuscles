@@ -1,5 +1,6 @@
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
+ThisBuild / tlSitePublishBranch := Some("main")
 
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
@@ -25,7 +26,6 @@ lazy val root = (project in file("."))
     publishTo := None,
   )
   .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses)
-
 
 //todo use tuplesTransformers. This lib should apply tuplesTransformers for monocle only
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
@@ -56,10 +56,10 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
     crossScalaVersions := Seq("3.4.2"),
     scalaVersion := "3.4.2",
     libraryDependencies ++= Seq(
-      "org.typelevel" %% "munit-cats-effect" % "2.0.0" % Test,
-      "org.typelevel" %% "discipline-munit" % "2.0.0" % Test,
-      "org.typelevel" %% "cats-laws" % "2.13.0" % Test
-    )
+      "org.typelevel" %% "munit-cats-effect" % "2.0.0"  % Test,
+      "org.typelevel" %% "discipline-munit"  % "2.0.0"  % Test,
+      "org.typelevel" %% "cats-laws"         % "2.13.0" % Test,
+    ),
   )
 
 lazy val fieldsNames = (project in file("modules/fields-names"))
@@ -98,7 +98,7 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
   )
   .settings(
     libraryDependencies += "org.typelevel" %% "shapeless3-deriving" % "3.4.3",
-    libraryDependencies += "org.typelevel" %% "cats-core" % "2.13.0"
+    libraryDependencies += "org.typelevel" %% "cats-core"           % "2.13.0",
   )
 
 lazy val conversions = (project in file("modules/conversions"))
@@ -114,3 +114,28 @@ lazy val conversions = (project in file("modules/conversions"))
     libraryDependencies += "dev.optics"    %% "monocle-macro" % "3.2.0" % Test,
   )
   .dependsOn(monocleTuples)
+
+lazy val docs = project.in(file("site"))
+  .enablePlugins(TypelevelSitePlugin)
+  .dependsOn(tuplesTransformers)
+  .settings(
+    crossScalaVersions := Seq("3.4.2"),
+    scalaVersion := "3.4.2",
+    mdocVariables := Map(
+      "VERSION" -> tuplesTransformers.project./(version).value
+    )
+  )
+
+/*
+lazy val docs = project // new documentation project
+  .in(file("minuscles-docs")) // important: it must not be docs/
+  .dependsOn(tuplesTransformers)
+  .enablePlugins(MdocPlugin)
+  .settings(
+    crossScalaVersions := Seq("3.4.2"),
+    scalaVersion := "3.4.2",
+    mdocVariables := Map(
+      "VERSION" -> tuplesTransformers.project./(version).value
+    )
+  )
+*/
