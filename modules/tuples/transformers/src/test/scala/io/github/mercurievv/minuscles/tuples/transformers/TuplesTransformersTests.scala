@@ -18,6 +18,12 @@ class TuplesTransformersTests extends Laws {
       val fr: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = flatToNested(gr)
       val ntd: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = inp.toNested
       Prop.passed
+    },
+    "TuplesTransformers swap types checking" -> Prop.forAll { (inp: TestType) =>
+      val tt = ("1", 2, 3D, 4L, 5F)
+      val bb: (String, Long, Double, Int, Float) = all.swap(tt)(2, 4)
+      println(bb)
+      Prop.passed
     }
   )
 }
