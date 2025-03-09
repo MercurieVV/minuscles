@@ -48,26 +48,24 @@ object all:
       ],
       Drop[T, S[MAXN]]
     ]
+  
   inline transparent def swap[T <: NonEmptyTuple, N1 <: Int, N2 <: Int]( t: T)(n1: N1, n2: N2): Any =
     val nMin: Min[n1.type , n2.type ] = n1.min(n2).asInstanceOf
     val nMax: Max[n1.type , n2.type] = n1.max(n2).asInstanceOf
     val nMinm1: Min[n1.type , n2.type] - 1 = (nMin - 1).asInstanceOf
     val nMaxm1: Max[n1.type , n2.type] - 1 = (nMax - 1).asInstanceOf
-//    val nmnmm1: Max[n1.type , n2.type] - Min[n1.type , n2.type] - 1 = (nMax - nMin - 1).asInstanceOf
-//    t.drop(nmnmm1)
-    swapp[T, nMinm1.type, nMaxm1.type](t)(nMinm1, nMaxm1).asInstanceOf[Swap[T, nMinm1.type , nMaxm1.type]]
+    
+    runtimeSwap[T, nMin.type, nMax.type , nMinm1.type, nMaxm1.type](t)(nMin, nMax, nMinm1, nMaxm1)//.asInstanceOf[Swap[T, nMinm1.type , nMaxm1.type]]
 
-  def swapp[T <: NonEmptyTuple, NMinm1 <: Int, NMaxm1 <: Int](  t: T)(
+  transparent inline def runtimeSwap[T <: NonEmptyTuple, NMin <: Int, NMax <: Int, NMinm1 <: Int, NMaxm1 <: Int](t: T)(
+    nMin: NMin,nMax: NMax,nMinm1: NMinm1, nMaxm1: NMaxm1) : Tuple =
 
-    nMinm1: NMinm1, nMaxm1: NMaxm1) : Tuple =
-
-    import runtime.Tuples as T
-    val tp1 = T.take(t, nMinm1)
-    val el1 = T.apply(t, nMaxm1)
-    val tp2 = T.drop(T.take(t, nMaxm1), nMinm1 + 1)
-    val el2 = T.apply(t, nMinm1)
-    val tp3 = T.drop(t, nMaxm1 + 1)
-    ((tp1 :* el1) ++ tp2 :* el2) ++ tp3
+    val tp1 = t.take(nMinm1)
+    val el1 = t.apply(nMaxm1)
+    val tp2 = t.take(nMaxm1).drop(nMin)
+    val el2 = t.apply(nMinm1)
+    val tp3 = t.drop(nMax)
+    (((tp1 :* el1) ++ tp2 :* el2) ++ tp3).asInstanceOf[Swap[T, nMinm1.type , nMaxm1.type]]
 
   inline def flatToNested[T <: Tuple](t: T): FlatToNested[T] =
     flatToNestedRuntime(t).asInstanceOf[FlatToNested[T]]
