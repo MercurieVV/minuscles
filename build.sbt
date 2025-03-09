@@ -26,7 +26,6 @@ lazy val root = (project in file("."))
     publishTo := None,
   )
   .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses, tuplesTransformers, shapeless3typeclasses)
-
 //todo use tuplesTransformers. This lib should apply tuplesTransformers for monocle only
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)

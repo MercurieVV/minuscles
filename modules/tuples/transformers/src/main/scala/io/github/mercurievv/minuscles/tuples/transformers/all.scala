@@ -69,7 +69,6 @@ object all:
     val tp3 = T.drop(t, nMaxm1 + 1)
     ((tp1 :* el1) ++ tp2 :* el2) ++ tp3
 
-
   inline def flatToNested[T <: Tuple](t: T): FlatToNested[T] =
     flatToNestedRuntime(t).asInstanceOf[FlatToNested[T]]
   def flatToNestedRuntime[T <: Tuple](t: T): Tuple =
