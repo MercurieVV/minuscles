@@ -22,8 +22,8 @@ object all:
 
   extension [T <: Tuple] (t: T)
     inline def toFlatten : Flatten[T] = flatten(t)
-    inline def flattenToNested : FlatToNested[T] = flatToNested(t)
-    inline def toNested : FlatToNested[Flatten[T]] = nested(t)
+    inline def flattenToNested : FlatToNested[T] = flatToNestedR(t)
+    inline def toNestedR : FlatToNested[Flatten[T]] = nestedR(t)
   extension[T <: NonEmptyTuple] (inline t: T)
     transparent inline def swap[N1 <: Int, N2 <: Int](inline n1: N1, inline n2 : N2) : Any = swapElements(t)(n1, n2)
 
@@ -69,16 +69,16 @@ object all:
     val tp3 = t.drop(nMax)
     (((tp1 :* el1) ++ tp2 :* el2) ++ tp3).asInstanceOf[Swap[T, nMinm1.type , nMaxm1.type]]
 
-  inline def flatToNested[T <: Tuple](t: T): FlatToNested[T] =
+  inline def flatToNestedR[T <: Tuple](t: T): FlatToNested[T] =
     flatToNestedRuntime(t).asInstanceOf[FlatToNested[T]]
   def flatToNestedRuntime[T <: Tuple](t: T): Tuple =
     t match
       case EmptyTuple => EmptyTuple
       case h *: EmptyTuple => h *: EmptyTuple
       case h *: h2 *: EmptyTuple => (h, h2)
-      case h *: tail => (h, flatToNested(tail))
+      case h *: tail => (h, flatToNestedR(tail))
 
-  inline def nested[T <: Tuple](t: T): FlatToNested[Flatten[T]] = {
-    flatToNested(flatten(t))
+  inline def nestedR[T <: Tuple](t: T): FlatToNested[Flatten[T]] = {
+    flatToNestedR(flatten(t))
   }
 

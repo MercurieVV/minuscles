@@ -10,8 +10,8 @@ trait TuplesTransformersLaws[InpTuple <: Tuple] {
 
   inline def idempotency(inpTuple: InpTuple): Prop =
     val flatten = inpTuple.toFlatten
-    val nested = inpTuple.toNested
-    flatten.toNested == nested && nested.toFlatten == flatten
+    val nested = inpTuple.toNestedR
+    flatten.toNestedR == nested && nested.toFlatten == flatten
 }
 
 object TuplesTransformersLaws {
