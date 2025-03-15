@@ -11,7 +11,7 @@ val commonSettings = Seq(
   sonatypeProfileName := "io.github.mercurievv",
   scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((3, _))  => Seq("-Ykind-projector:underscores")
+      case Some((3, _))  => Seq("-Ykind-projector:underscores", "-Xmax-inlines:64")
       case Some((2, 13)) => Seq("-Xsource:3")
     }
   },

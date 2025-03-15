@@ -16,9 +16,9 @@ Now we will do some transformations:
 ### flattening, nesting
 ```scala mdoc
 val flatten: (Int, Long, String, Boolean, Double, Char, Float, Byte) = inp.toFlatten
-val flattenToNested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = flatToNested(flatten)
+val flattenToNested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = flatToNestedR(flatten)
 //flatToNested method works correctly only with flattened tuples, but in such cases it should save some CPU
-val nested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = inp.toNested
+val nested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = inp.toNestedR
 ```
 ### Elements swap
 ```scala mdoc

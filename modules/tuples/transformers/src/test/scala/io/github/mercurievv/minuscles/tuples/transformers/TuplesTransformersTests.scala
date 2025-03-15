@@ -8,39 +8,37 @@ import io.github.mercurievv.minuscles.tuples.transformers.compiletime.swapValues
 import scala.util.Random
 
 class TuplesTransformersTests extends Laws {
-  type TestType = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)), String)
-  type TestType2 = ((Int, Long), (Char, (Boolean, Double, Char), (Float, Byte)), Long)
+  // todo extract from class, pass as arguments
+  type TestType        = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)), String)
+  type TestTypeFlatten = Flatten[TestType]
 
   def rules: RuleSet = new DefaultRuleSet(
-    name = "TuplesTransformers Laws",
+    name   = "TuplesTransformers Laws",
     parent = None,
-    "TuplesTransformers idempotency" -> Prop.forAll { (inp: (Int, (Double, Float), String)) =>
-      TuplesTransformersLaws[(Int, (Double, Float), String)].idempotency(inp)
+    "Flatten <> Nested isomorphism" -> Prop.forAll { (inp: TestType) =>
+      MorphismsLaws[TestType, FlattenF, NestedF](flattenF, nestedRF, nestedRF, flattenF).isomorphism(inp)
     },
     "TuplesTransformers types checking" -> Prop.forAll { (inp: TestType) =>
-      val gr: (Int, Long, String, Boolean, Double, Char, Float, Byte, String) = inp.toFlatten
-      val fr: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, (Byte, String)))))))) = flatToNestedR(gr)
+      val gr: (Int, Long, String, Boolean, Double, Char, Float, Byte, String)                = inp.toFlatten
+      val fr: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, (Byte, String))))))))  = flatToNestedR(gr)
       val ntd: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, (Byte, String)))))))) = inp.toNestedR
       Prop.passed
     },
     "TuplesTransformers swap types checking" -> Prop.forAll { (inp: TestType) =>
-      val tt = ("1", 2, 3D, 4L, 5F)
+      val tt                                     = ("1", 2, 3d, 4L, 5f)
       val bb: (String, Long, Double, Int, Float) = tt.swap(2, 4)
       println(bb)
       Prop.passed
     },
-    "after swap, elements are the same" -> Prop.forAll { (inp: TestType) =>
+    "after swap, tuple contains same elements" -> Prop.forAll { (inp: TestTypeFlatten) =>
       val (n1, n2) = swapValues
-      val flatten = inp.toFlatten
-      val out = flatten.swap(n1, n2)
-      out.toList.map(_.hashCode).sum == flatten.toList.map(_.hashCode).sum
+      TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
+        .containsSameElements(inp)
     },
-    "after swap, 2 elements order are different" -> Prop.forAll { (inp: TestType) =>
+    "after swap, 2 elements order are different" -> Prop.forAll { (inp: TestTypeFlatten) =>
       val (n1, n2) = swapValues
-      val flatten = inp.toFlatten
-      val out = flatten.swap(n1, n2)
-      out.toList.zipWithIndex.diff(flatten.toList.zipWithIndex).size == 2
-    }
+      TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
+        .elementsChanged(inp, 2)
+    },
   )
-
 }
