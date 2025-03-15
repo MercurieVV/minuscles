@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="Typelevel Laika + Helium Theme" />
-  <title>Tuples transformations</title>
+  <title>Minuscles</title>
   
   <meta name="author" content="Viktors Kalinins"/>
   
@@ -85,8 +85,8 @@
   </div>
 
   <ul class="nav-list">
-    <li class="level1 nav-leaf"><a href="index.html">Minuscles</a></li>
-    <li class="level1 active nav-leaf"><a href="#">Tuples transformations</a></li>
+    <li class="level1 active nav-leaf"><a href="#">Minuscles</a></li>
+    <li class="level1 nav-leaf"><a href="readme.html">Tuples transformations</a></li>
   </ul>
 
 </nav>
@@ -95,11 +95,9 @@
 
       
 <nav id="page-nav">
-  <p class="header"><a href="#">Tuples transformations</a></p>
+  <p class="header"><a href="#">Minuscles</a></p>
 
   <ul class="nav-list">
-    <li class="level1 nav-leaf"><a href="#flattening-nesting">flattening, nesting</a></li>
-    <li class="level1 nav-leaf"><a href="#elements-swap">Elements swap</a></li>
   </ul>
 
   <p class="footer"></p>
@@ -108,57 +106,8 @@
 
       <main class="content">
 
-        <h1 id="tuples-transformations" class="title">Tuples transformations</h1>
-        <p>This is mini project to transform tuple and its types.</p>
-        <p>To install</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;tuples_transformers&quot;</span><span> % </span><span class="string-literal">&quot;0.1.0&quot;</span></code></pre>
-        <p>Use import</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">github</span><span>.</span><span class="identifier">mercurievv</span><span>.</span><span class="identifier">minuscles</span><span>.</span><span class="identifier">tuples</span><span>.</span><span class="identifier">transformers</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
-        <p>Let&#39;s create some input trait</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">input</span><span>: ((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))) = ((</span><span class="number-literal">1</span><span>, </span><span class="number-literal">2L</span><span>), (</span><span class="string-literal">&quot;3&quot;</span><span>, (</span><span class="boolean-literal">true</span><span>, </span><span class="number-literal">0.5D</span><span>, </span><span class="string-literal">&quot;6&quot;</span><span>.</span><span class="identifier">charAt</span><span>(</span><span class="number-literal">0</span><span>)), (</span><span class="number-literal">0.7F</span><span>, </span><span class="number-literal">0x8</span><span>)))
-</span><span class="comment">// input: Tuple2[Tuple2[Int, Long], Tuple3[String, Tuple3[Boolean, Double, Char], Tuple2[Float, Byte]]] = (
-//   (1, 2L),
-//   (&quot;3&quot;, (true, 0.5, &#39;6&#39;), (0.7F, 8))
-// )</span></code></pre>
-        <p>Now we will do some transformations: </p>
-        
-        <h4 id="flattening-nesting" class="section"><a class="anchor-link left" href="#flattening-nesting"><i class="icofont-laika link">&#xef71;</i></a>flattening, nesting</h4>
-        <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">flatten</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>, </span><span class="type-name">String</span><span>, </span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>, </span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>) = </span><span class="identifier">input</span><span>.</span><span class="identifier">toFlatten</span><span>
-</span><span class="comment">// flatten: Tuple8[Int, Long, String, Boolean, Double, Char, Float, Byte] = (
-//   1,
-//   2L,
-//   &quot;3&quot;,
-//   true,
-//   0.5,
-//   &#39;6&#39;,
-//   0.7F,
-//   8
-// )
-</span><span class="keyword">val</span><span> </span><span class="identifier">flattenToNested</span><span>: (</span><span class="type-name">Int</span><span>, (</span><span class="type-name">Long</span><span>, (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, (</span><span class="type-name">Double</span><span>, (</span><span class="type-name">Char</span><span>, (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))))))) = </span><span class="identifier">flatToNestedR</span><span>(</span><span class="identifier">flatten</span><span>)
-</span><span class="comment">// flattenToNested: Tuple2[Int, Tuple2[Long, Tuple2[String, Tuple2[Boolean, Tuple2[Double, Tuple2[Char, Tuple2[Float, Byte]]]]]]] = (
-//   1,
-//   (2L, (&quot;3&quot;, (true, (0.5, (&#39;6&#39;, (0.7F, 8))))))
-// )
-//flatToNested method works correctly only with flattened tuples, but in such cases it should save some CPU
-</span><span class="keyword">val</span><span> </span><span class="identifier">nested</span><span>: (</span><span class="type-name">Int</span><span>, (</span><span class="type-name">Long</span><span>, (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, (</span><span class="type-name">Double</span><span>, (</span><span class="type-name">Char</span><span>, (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))))))) = </span><span class="identifier">input</span><span>.</span><span class="identifier">toNestedR</span><span>
-</span><span class="comment">// nested: Tuple2[Int, Tuple2[Long, Tuple2[String, Tuple2[Boolean, Tuple2[Double, Tuple2[Char, Tuple2[Float, Byte]]]]]]] = (
-//   1,
-//   (2L, (&quot;3&quot;, (true, (0.5, (&#39;6&#39;, (0.7F, 8))))))
-// )</span></code></pre>
-        
-        <h4 id="elements-swap" class="section"><a class="anchor-link left" href="#elements-swap"><i class="icofont-laika link">&#xef71;</i></a>Elements swap</h4>
-        <p>Swapping 2 elements of tuple.</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">swapped</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Boolean</span><span>, </span><span class="type-name">String</span><span>, </span><span class="type-name">Long</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>, </span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>) = </span><span class="identifier">flatten</span><span>.</span><span class="identifier">swap</span><span>(</span><span class="number-literal">2</span><span>, </span><span class="number-literal">4</span><span>)
-</span><span class="comment">// swapped: Tuple8[Int, Boolean, String, Long, Double, Char, Float, Byte] = (
-//   1,
-//   true,
-//   &quot;3&quot;,
-//   2L,
-//   0.5,
-//   &#39;6&#39;,
-//   0.7F,
-//   8
-// )</span></code></pre>
+        <h1 id="minuscles" class="title">Minuscles</h1>
+        <p>Tuple transformers: <a href="https://mercurievv.github.io/minuscles/readme.html">https://mercurievv.github.io/minuscles/readme.html</a></p>
 
         
 <hr class="footer-rule"/>
