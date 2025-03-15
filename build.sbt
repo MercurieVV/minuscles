@@ -1,5 +1,7 @@
 ThisBuild / tlBaseVersion := "0.1"
 ThisBuild / licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))
+ThisBuild / startYear := Some(2025)
+ThisBuild / headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins"))
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
 ThisBuild / tlSitePublishBranch := Some("main")
@@ -7,6 +9,7 @@ ThisBuild / tlSitePublishBranch := Some("main")
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
   organization := "io.github.mercurievv.minuscles",
+  startYear := Some(2025),
   crossScalaVersions := Seq("2.13.16", "3.4.2"),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
@@ -17,6 +20,8 @@ val commonSettings = Seq(
       case Some((2, 13)) => Seq("-Xsource:3")
     }
   },
+  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
+  headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
 )
 lazy val root = (project in file("."))
   .settings(
@@ -116,7 +121,8 @@ lazy val conversions = (project in file("modules/conversions"))
   )
   .dependsOn(monocleTuples)
 
-lazy val docs = project.in(file("site"))
+lazy val docs = project
+  .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
   .dependsOn(tuplesTransformers)
   .settings(
@@ -124,7 +130,7 @@ lazy val docs = project.in(file("site"))
     scalaVersion := "3.4.2",
     mdocVariables := Map(
       "VERSION" -> tuplesTransformers.project./(version).value
-    )
+    ),
   )
 
 /*
@@ -139,4 +145,4 @@ lazy val docs = project // new documentation project
       "VERSION" -> tuplesTransformers.project./(version).value
     )
   )
-*/
+ */
