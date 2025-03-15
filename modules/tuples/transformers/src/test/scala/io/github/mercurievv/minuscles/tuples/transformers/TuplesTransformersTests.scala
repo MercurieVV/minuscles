@@ -16,7 +16,7 @@ class TuplesTransformersTests extends Laws {
     name   = "TuplesTransformers Laws",
     parent = None,
     "Flatten <> Nested isomorphism" -> Prop.forAll { (inp: TestType) =>
-      MorphismsLaws[TestType, FlattenF, NestedF](flattenF, nestedRF, nestedRF, flattenF).isomorphism(inp)
+      MorphismsLaws[TestType, FlattenF, NestedRF](flattenF, nestedRF, nestedRF, flattenF).isomorphism(inp)
     },
     "TuplesTransformers types checking" -> Prop.forAll { (inp: TestType) =>
       val gr: (Int, Long, String, Boolean, Double, Char, Float, Byte, String)                = inp.toFlatten

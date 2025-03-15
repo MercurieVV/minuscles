@@ -11,15 +11,13 @@ object compiletime:
   def swapValuesCode(using Quotes): Expr[(Int, Int)] = {
     val n1 = 1 + (Random.nextInt() % 8).abs
     val n2 = 1 + (Random.nextInt() % 8).abs
-    val n2f = if(n1 == n2)
-      {(n2 + 1) % 8}
+    val n2f = if (n1 == n2) { (n2 + 1) % 8 }
     else
       n2
     Expr(
       (
         n1,
-        n2f
+        n2f,
       )
     )
   }
-

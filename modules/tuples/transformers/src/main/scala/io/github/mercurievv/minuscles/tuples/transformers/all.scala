@@ -12,13 +12,12 @@ object all:
         case _     => h *: Flatten[tail]
       }
   }
-  /*
+
   // type not bound to Tuple to use it as abstract F[_]
   type FlattenF[T] <: Tuple = T match {
     case Tuple => Flatten[T]
     case _     => T *: EmptyTuple
   }
-   */
 
   type FlatToNestedR[T <: Tuple] <: Tuple = T match {
     case EmptyTuple            => EmptyTuple
@@ -28,12 +27,11 @@ object all:
   }
 
   type NestedR[T <: Tuple] = FlatToNestedR[Flatten[T]]
-  /*
-  type NestedF[T]         =  T match {
-    case Tuple => Nested[T]
+
+  type NestedRF[T] = T match {
+    case Tuple => NestedR[T]
     case _     => T *: EmptyTuple
   }
-   */
 
   extension [T <: Tuple](t: T)
     inline def toFlatten: Flatten[T]              = flatten(t)
@@ -42,15 +40,14 @@ object all:
   extension [T <: NonEmptyTuple](inline t: T)
     transparent inline def swap[N1 <: Int, N2 <: Int](inline n1: N1, inline n2: N2): Any = swapElements(t)(n1, n2)
 
-  /*
   inline def flattenF[T](t: T): FlattenF[T] = {
     t match
       case tpl: Tuple => flatten(tpl)
-      case _     => t *: EmptyTuple
-  }.asInstanceOf[FlattenF[T]]
-   */
+      case _          => t *: EmptyTuple
+  }.asInstanceOf
+
   inline def flatten[T <: Tuple](t: T): Flatten[T] =
-    flattenRuntime(t).asInstanceOf[Flatten[T]]
+    flattenRuntime(t).asInstanceOf
   inline def flattenRuntime[T <: Tuple](t: T): Tuple =
     inline t match
       case EmptyTuple           => EmptyTuple
@@ -94,7 +91,7 @@ object all:
     (((tp1 :* el1) ++ tp2 :* el2) ++ tp3).asInstanceOf[SwapMM[T, nMinm1.type, nMaxm1.type]]
 
   inline def flatToNestedR[T <: Tuple](t: T): FlatToNestedR[T] =
-    flatToNestedRuntime(t).asInstanceOf[FlatToNestedR[T]]
+    flatToNestedRuntime(t).asInstanceOf
   def flatToNestedRuntime[T <: Tuple](t: T): Tuple =
     t match
       case EmptyTuple            => EmptyTuple
@@ -106,8 +103,8 @@ object all:
     flatToNestedR(flatten(t))
   }
 
-/*  inline def nestedRF[T](t: T): NestedF[T] = {
+  inline def nestedRF[T](t: T): NestedRF[T] = {
     t match
       case tpl: Tuple => nestedR(tpl)
-      case _ => t *: EmptyTuple
-  }.asInstanceOf[NestedF[T]]*/
+      case _          => t *: EmptyTuple
+  }.asInstanceOf

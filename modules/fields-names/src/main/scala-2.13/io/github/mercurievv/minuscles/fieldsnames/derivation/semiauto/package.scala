@@ -22,7 +22,7 @@ package object semiauto {
         }*/
      */
 
-    implicit def gen[T]: FieldsNames[T] = macro Magnolia.gen[T]
+    implicit def gen[T]: FieldsNames[T]         = macro Magnolia.gen[T]
     implicit def fieldsNames[T]: FieldsNames[T] = macro Magnolia.gen[T]
   }
 
