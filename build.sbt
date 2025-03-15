@@ -128,6 +128,7 @@ lazy val docs = project
   .settings(
     crossScalaVersions := Seq("3.4.2"),
     scalaVersion := "3.4.2",
+    tlSiteIsTypelevelProject := Some(TypelevelProject.Affiliate),
     mdocVariables := Map(
       "VERSION" -> tuplesTransformers.project./(version).value
     ),
