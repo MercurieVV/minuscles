@@ -1,3 +1,4 @@
+ThisBuild / tlBaseVersion := "0.1"
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
 ThisBuild / tlSitePublishBranch := Some("main")
@@ -25,7 +26,7 @@ lazy val root = (project in file("."))
     publishArtifact := false,
     publishTo := None,
   )
-  .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses, tuplesTransformers, shapeless3typeclasses)
+  .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses, tuplesTransformers, docs)
 //todo use tuplesTransformers. This lib should apply tuplesTransformers for monocle only
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
