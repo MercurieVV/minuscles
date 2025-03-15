@@ -780,5 +780,4 @@ object Parser:
           yield parsed
       if accum then inst.constructA(parseField)(pure, map, ap)
       else inst.constructM(parseField)(pure, map, tailRecM)
-
 end Parser
