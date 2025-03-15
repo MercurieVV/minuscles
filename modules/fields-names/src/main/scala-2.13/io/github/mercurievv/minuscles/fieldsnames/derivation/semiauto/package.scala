@@ -21,8 +21,6 @@ import magnolia1._
 
 package object semiauto {
 
-  import language.experimental.macros
-
   object FieldNamesDerivation {
     type Typeclass[T] = FieldsNames[T]
 

@@ -18,7 +18,6 @@ package io.github.mercurievv.minuscles.conversions.deep
 import cats.arrow.FunctionK
 import cats.implicits._
 import cats.~>
-import io.github.mercurievv.minuscles.tuples.plens.implicits.Tuple_3_2_PlensOps
 
 object DeepConverterTest {
   import implicits._

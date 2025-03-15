@@ -16,13 +16,8 @@
 
 package io.github.mercurievv.minuscles.tuples.transformers
 
-import cats.arrow.FunctionK
 import cats.syntax.functor.*
-import cats.syntax.applicative.*
 import org.scalacheck.Prop
-import org.typelevel.discipline.Laws
-import cats.{Applicative, Functor, InjectK, Monad}
-import io.github.mercurievv.minuscles.tuples.transformers.all.*
 
 trait MorphismsLaws[A, F[_], G[_]](
     a2f: A => F[A],

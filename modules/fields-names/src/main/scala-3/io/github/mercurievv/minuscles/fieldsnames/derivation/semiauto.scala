@@ -17,7 +17,6 @@
 package io.github.mercurievv.minuscles.fieldsnames.derivation
 
 import io.github.mercurievv.minuscles.fieldsnames.FieldsNames
-import io.github.mercurievv.minuscles.fieldsnames.derivation.semiauto.FieldNamesDerivation
 
 import scala.deriving.Mirror
 

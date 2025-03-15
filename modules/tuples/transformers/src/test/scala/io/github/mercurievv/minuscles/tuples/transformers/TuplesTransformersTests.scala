@@ -21,13 +21,14 @@ import org.typelevel.discipline.Laws
 import io.github.mercurievv.minuscles.tuples.transformers.all.*
 import io.github.mercurievv.minuscles.tuples.transformers.compiletime.swapValues
 
-import scala.util.Random
+import scala.annotation.nowarn
 
 class TuplesTransformersTests extends Laws {
   // todo extract from class, pass as arguments
   type TestType        = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)), String)
   type TestTypeFlatten = Flatten[TestType]
 
+  @nowarn
   def rules: RuleSet = new DefaultRuleSet(
     name   = "TuplesTransformers Laws",
     parent = None,
@@ -48,11 +49,13 @@ class TuplesTransformersTests extends Laws {
     },
     "after swap, tuple contains same elements" -> Prop.forAll { (inp: TestTypeFlatten) =>
       val (n1, n2) = swapValues
+      println(s"$n1 $n2")
       TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
         .containsSameElements(inp)
     },
     "after swap, 2 elements order are different" -> Prop.forAll { (inp: TestTypeFlatten) =>
       val (n1, n2) = swapValues
+      println(s"$n1 $n2")
       TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
         .elementsChanged(inp, 2)
     },

@@ -15,8 +15,6 @@
  */
 
 package io.github.mercurievv.minuscles.conversions.deep
-import cats.arrow.FunctionK
-import cats.implicits.toComposeOps
 import cats.{Functor, ~>}
 import cats.syntax.functor.*
 

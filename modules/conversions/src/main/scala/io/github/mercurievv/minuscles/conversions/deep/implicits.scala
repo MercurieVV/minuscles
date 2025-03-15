@@ -17,8 +17,7 @@
 package io.github.mercurievv.minuscles.conversions.deep
 import io.github.mercurievv.minuscles.tuples.plens.implicits._
 import cats.Functor
-import cats.arrow.{Arrow, ArrowChoice, CommutativeArrow, FunctionK}
-import cats.implicits.toComposeOps
+import cats.arrow.FunctionK
 
 object implicits {
   // implicit def convertId[A]: DeepConverter[A, A] = (a1: A) => a1
