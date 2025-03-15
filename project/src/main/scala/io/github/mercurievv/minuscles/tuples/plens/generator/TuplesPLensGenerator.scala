@@ -9,32 +9,44 @@ object TuplesPLensGenerator {
     if (!Files.exists(filePath.getParent)) {
       Files.createDirectories(filePath.getParent)
     }
-    Files.write(filePath, content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)
+    Files.write(
+      filePath,
+      content.getBytes(StandardCharsets.UTF_8),
+      StandardOpenOption.CREATE,
+      StandardOpenOption.TRUNCATE_EXISTING,
+    )
   }
 
   def gen(maxAirity: Int): String = {
     val airityAndEldementNr = for {
       airity <- Range(1, maxAirity)
-      elNr <- Range(1, airity + 1)
+      elNr   <- Range(1, airity + 1)
     } yield (airity, elNr)
 
-    val data = airityAndEldementNr.map{case (airity, elNr) => {
-      val As = Range(1, airity + 1).map(_.toString).map("A" + _).mkString(", ")
-      val ABs = Range(1, airity + 1).map(v =>
-        if(v == elNr)
-          "B"
-        else
-          "A" + v.toString
-      ).mkString(", ")
-      (airity, elNr, As, ABs)
-    }}
+    val data = airityAndEldementNr.map {
+      case (airity, elNr) => {
+        val As = Range(1, airity + 1).map(_.toString).map("A" + _).mkString(", ")
+        val ABs = Range(1, airity + 1)
+          .map(v =>
+            if (v == elNr)
+              "B"
+            else
+              "A" + v.toString
+          )
+          .mkString(", ")
+        (airity, elNr, As, ABs)
+      }
+    }
 
     val defsApplied = data
-      .map((defsAppliedGenerator _).tupled).mkString("\n")
+      .map((defsAppliedGenerator _).tupled)
+      .mkString("\n")
     val defsPlens = data
-      .map((defsPlensGenerator _).tupled).mkString("\n")
+      .map((defsPlensGenerator _).tupled)
+      .mkString("\n")
     val ops = data
-      .map((opsGenerator _).tupled).mkString
+      .map((opsGenerator _).tupled)
+      .mkString
 
     s"""
       |package io.github.mercurievv.minuscles.tuples.plens

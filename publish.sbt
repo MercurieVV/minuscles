@@ -6,7 +6,7 @@ sonatypeProfileName := "io.github.mercurievv"
 ThisBuild / scmInfo := Some(
   ScmInfo(
     url("https://github.com/MercurieVV/minuscles"),
-    "scm:git@github.com:MercurieVV/minuscles.git"
+    "scm:git@github.com:MercurieVV/minuscles.git",
   )
 )
 
@@ -15,7 +15,7 @@ ThisBuild / developers := List(
     id    = "MercurieVV",
     name  = "Viktors Kalinins",
     email = "mercureivv@gmail.com",
-    url   = url("https://github.com/MercurieVV/")
+    url   = url("https://github.com/MercurieVV/"),
   )
 )
 
