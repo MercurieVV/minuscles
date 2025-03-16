@@ -4,6 +4,7 @@ ThisBuild / startYear := Some(2025)
 //ThisBuild / headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins"))
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
+ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / tlCiReleaseTags := false
 
 val commonSettings = Seq(
@@ -22,8 +23,6 @@ val commonSettings = Seq(
   },
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
-  tlSitePublishBranch := Some("main"),
-  tlBaseVersion := "0.1",
   tlCiReleaseTags := false,
 )
 lazy val root = (project in file("."))
@@ -113,7 +112,6 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
 
 lazy val conversions = (project in file("modules/conversions"))
   .settings(commonSettings)
-  .enablePlugins(NoPublishPlugin)
   .settings(
     name := "conversions",
     version := "0.1.1",
