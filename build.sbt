@@ -55,7 +55,7 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(
     libraryDependencies += "dev.optics" %% "monocle-core" % "3.2.0"
   )
-  .settings(notPublishIfNoNeed(organization.value, name.value, version.value))
+  .settings(checkAndSetPublishSettings.value: _*)
 
 lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
   .settings(commonSettings)
@@ -72,7 +72,7 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
       "org.typelevel" %% "cats-laws"         % "2.13.0" % Test,
     ),
   )
-  .settings(notPublishIfNoNeed(organization.value, name.value, version.value))
+  .settings(checkAndSetPublishSettings.value: _*)
 
 lazy val fieldsNames = (project in file("modules/fields-names"))
   .settings(commonSettings)
@@ -97,7 +97,7 @@ lazy val fieldsNames = (project in file("modules/fields-names"))
     },
     libraryDependencies += "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test,
   )
-  .settings(notPublishIfNoNeed(organization.value, name.value, version.value))
+  .settings(checkAndSetPublishSettings.value: _*)
 
 lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasses"))
   .settings(commonSettings)
@@ -113,7 +113,7 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
     libraryDependencies += "org.typelevel" %% "shapeless3-deriving" % "3.4.3",
     libraryDependencies += "org.typelevel" %% "cats-core"           % "2.13.0",
   )
-  .settings(notPublishIfNoNeed(organization.value, name.value, version.value))
+  .settings(checkAndSetPublishSettings.value: _*)
 
 lazy val conversions = (project in file("modules/conversions"))
   .settings(commonSettings)
@@ -128,7 +128,7 @@ lazy val conversions = (project in file("modules/conversions"))
     libraryDependencies += "dev.optics"    %% "monocle-macro" % "3.2.0" % Test,
   )
   .dependsOn(monocleTuples)
-  .settings(notPublishIfNoNeed(organization.value, name.value, version.value))
+  .settings(checkAndSetPublishSettings.value: _*)
 
 lazy val docs = project
   .in(file("site"))
@@ -159,14 +159,20 @@ lazy val docs = project // new documentation project
 
 import scala.sys.process._
 
-def notPublishIfNoNeed(organization: String, name: String, version: String) = {
-  if (isPublished(organization, name, version)) {
-    NoPublishPlugin.projectSettings
-  } else {
-    Nil
-  }
+lazy val checkAndSetPublishSettings = Def.setting {
+  val org  = organization.value
+  val name = moduleName.value
+  val ver  = version.value
 
+  if (isPublished(org, name, ver)) {
+    println(s"Skipping publish for $name $ver, already published.")
+    NoPublishPlugin.projectSettings // This prevents publishing the subproject
+  } else {
+    println(s"Publishing $name $ver, as it's not published yet.")
+    Seq.empty
+  }
 }
+
 def isPublished(organization: String, name: String, version: String): Boolean = {
   val url = s"https://repo1.maven.org/maven2/${organization.replace('.', '/')}/$name/$version/$name-$version.pom"
   try {
