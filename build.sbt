@@ -1,10 +1,5 @@
-ThisBuild / tlBaseVersion := "0.1"
-ThisBuild / licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))
-ThisBuild / startYear := Some(2025)
-//ThisBuild / headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins"))
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
-ThisBuild / tlSitePublishBranch := Some("main")
 
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
@@ -22,6 +17,8 @@ val commonSettings = Seq(
   },
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
+  tlSitePublishBranch := Some("main"),
+  tlBaseVersion := "0.1",
 )
 lazy val root = (project in file("."))
   .settings(
