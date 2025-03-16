@@ -5,7 +5,7 @@ ThisBuild / startYear := Some(2025)
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
 ThisBuild / tlSitePublishBranch := Some("main")
-ThisBuild / tlCiReleaseTags := false
+//ThisBuild / tlCiReleaseTags := false
 
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
@@ -23,8 +23,8 @@ val commonSettings = Seq(
   },
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
-  tlCiReleaseTags := false,
-  tlCiMimaBinaryIssueCheck := false,
+  //tlCiReleaseTags := false,
+  //tlCiMimaBinaryIssueCheck := false,
 )
 lazy val root = (project in file("."))
   .settings(
