@@ -195,7 +195,7 @@ jobs:
       - name: Submit Dependencies
         uses: scalacenter/sbt-dependency-submission@v2
         with:
-          modules-ignore: docs_3 conversions_2.13 conversions_3 conversions_2.13 conversions_3
+          modules-ignore: docs_3 conversions_2.13 conversions_3
           configs-ignore: test scala-tool scala-doc-tool test-internal
 
   site:
