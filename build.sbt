@@ -112,6 +112,7 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
 
 lazy val conversions = (project in file("modules/conversions"))
   .settings(commonSettings)
+  .enablePlugins(NoPublishPlugin)
   .settings(
     name := "conversions",
     version := "0.1.1",
