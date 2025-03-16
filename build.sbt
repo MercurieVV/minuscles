@@ -23,7 +23,7 @@ val commonSettings = Seq(
   },
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
-  // tlCiReleaseTags := false,
+  tlCiReleaseTags := false,
   // tlCiMimaBinaryIssueCheck := false,
 )
 lazy val root = (project in file("."))
@@ -55,6 +55,7 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(
     libraryDependencies += "dev.optics" %% "monocle-core" % "3.2.0"
   )
+  .settings(NoPublishPlugin.projectSettings)
 
 lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
   .settings(commonSettings)
@@ -95,6 +96,7 @@ lazy val fieldsNames = (project in file("modules/fields-names"))
     },
     libraryDependencies += "org.scalameta" %% "munit-scalacheck" % "0.7.29" % Test,
   )
+  .settings(NoPublishPlugin.projectSettings)
 
 lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasses"))
   .settings(commonSettings)
@@ -110,6 +112,7 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
     libraryDependencies += "org.typelevel" %% "shapeless3-deriving" % "3.4.3",
     libraryDependencies += "org.typelevel" %% "cats-core"           % "2.13.0",
   )
+  .settings(NoPublishPlugin.projectSettings)
 
 lazy val conversions = (project in file("modules/conversions"))
   .settings(commonSettings)
@@ -119,12 +122,12 @@ lazy val conversions = (project in file("modules/conversions"))
     isSnapshot := false,
     description := "Micro library to modify things generic way",
   )
-  .settings(NoPublishPlugin.projectSettings)
   .settings(
     libraryDependencies += "org.typelevel" %% "cats-core"     % "2.9.0",
     libraryDependencies += "dev.optics"    %% "monocle-macro" % "3.2.0" % Test,
   )
   .dependsOn(monocleTuples)
+  .settings(NoPublishPlugin.projectSettings)
 
 lazy val docs = project
   .in(file("site"))
@@ -152,3 +155,15 @@ lazy val docs = project // new documentation project
     )
   )
  */
+
+import scala.sys.process._
+
+def isPublished(organization: String, name: String, version: String): Boolean = {
+  val url = s"https://repo1.maven.org/maven2/${organization.replace('.', '/')}/$name/$version/$name-$version.pom"
+  try {
+    val exitCode = Seq("curl", "--head", "--fail", url).!
+    exitCode == 0
+  } catch {
+    case _: Throwable => false
+  }
+}
