@@ -23,8 +23,8 @@ val commonSettings = Seq(
   },
   licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
-  //tlCiReleaseTags := false,
-  //tlCiMimaBinaryIssueCheck := false,
+  // tlCiReleaseTags := false,
+  // tlCiMimaBinaryIssueCheck := false,
 )
 lazy val root = (project in file("."))
   .settings(
