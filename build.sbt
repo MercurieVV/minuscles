@@ -119,6 +119,7 @@ lazy val conversions = (project in file("modules/conversions"))
     isSnapshot := false,
     description := "Micro library to modify things generic way",
   )
+  .settings(NoPublishPlugin.projectSettings)
   .settings(
     libraryDependencies += "org.typelevel" %% "cats-core"     % "2.9.0",
     libraryDependencies += "dev.optics"    %% "monocle-macro" % "3.2.0" % Test,
