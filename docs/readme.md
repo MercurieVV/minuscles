@@ -1,6 +1,8 @@
 # Tuples transformations
 This is mini project to transform tuple and its types.
 
+It's Scala 3 only.
+
 To install
 ```scala
 libraryDependencies += "io.github.mercurievv.minuscles" % "tuples_transformers" % "@TUPLES_TRANSFORMERS_VERSION@"
