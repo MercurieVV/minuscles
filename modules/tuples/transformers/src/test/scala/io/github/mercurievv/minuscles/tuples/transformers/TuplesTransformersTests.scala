@@ -16,7 +16,8 @@
 
 package io.github.mercurievv.minuscles.tuples.transformers
 
-import org.scalacheck.Prop
+import org.scalacheck.Prop.*
+import org.scalacheck.*
 import org.typelevel.discipline.Laws
 import io.github.mercurievv.minuscles.tuples.transformers.all.*
 import io.github.mercurievv.minuscles.tuples.transformers.compiletime.swapValues
@@ -27,6 +28,9 @@ class TuplesTransformersTests extends Laws {
   // todo extract from class, pass as arguments
   type TestType        = ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte)), String)
   type TestTypeFlatten = Flatten[TestType]
+
+  val (n1, n2) = swapValues
+  println(s"$n1 $n2")
 
   @nowarn
   def rules: RuleSet = new DefaultRuleSet(
@@ -48,16 +52,16 @@ class TuplesTransformersTests extends Laws {
       Prop.passed
     },
     "after swap, tuple contains same elements" -> Prop.forAll { (inp: TestTypeFlatten) =>
-      val (n1, n2) = swapValues
-      println(s"$n1 $n2")
-      TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
-        .containsSameElements(inp)
+      (n1 != n2) ==> {
+        TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
+          .containsSameElements(inp)
+      }
     },
     "after swap, 2 elements order are different" -> Prop.forAll { (inp: TestTypeFlatten) =>
-      val (n1, n2) = swapValues
-      println(s"$n1 $n2")
-      TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
-        .elementsChanged(inp, 2)
+      (inp.apply(n1 - 1) != inp.apply(n2 - 1)) ==> {
+        TupleElementsLaws[TestTypeFlatten, Swap[TestTypeFlatten, n1.type, n2.type]](_.swap(n1, n2))
+          .elementsChanged(inp, 2)
+      }
     },
   )
 }
