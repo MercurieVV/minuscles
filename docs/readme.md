@@ -3,7 +3,7 @@ This is mini project to transform tuple and its types.
 
 To install
 ```scala
-libraryDependencies += "io.github.mercurievv.minuscles" % "tuples_transformers" % "@VERSION@"
+libraryDependencies += "io.github.mercurievv.minuscles" % "tuples_transformers" % "@TUPLES_TRANSFORMERS_VERSION@"
 ```
 
 Use import

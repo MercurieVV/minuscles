@@ -141,7 +141,7 @@ lazy val docs = project
     scalaVersion := "3.4.2",
     tlSiteIsTypelevelProject := Some(TypelevelProject.Affiliate),
     mdocVariables := Map(
-      "VERSION" -> tuplesTransformers.project./(version).value
+      "TUPLES_TRANSFORMERS_VERSION" -> tuplesTransformers.project./(version).value
     ),
   )
 
