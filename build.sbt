@@ -25,6 +25,8 @@ val commonSettings = Seq(
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
   tlCiReleaseTags := false,
   tlCiMimaBinaryIssueCheck := false,
+  mimaFailOnNoPrevious := false,
+  mimaReportBinaryIssues := false,
   // tlCiMimaBinaryIssueCheck := false,
 )
 lazy val root = (project in file("."))
