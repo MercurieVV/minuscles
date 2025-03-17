@@ -98,8 +98,8 @@
   <p class="header"><a href="#">Tuples transformations</a></p>
 
   <ul class="nav-list">
-    <li class="level1 nav-leaf"><a href="#flattening-nesting">flattening, nesting</a></li>
-    <li class="level1 nav-leaf"><a href="#elements-swap">Elements swap</a></li>
+    <li class="level1 nav-leaf"><a href="#flattening-nesting">Flattening, Nesting</a></li>
+    <li class="level1 nav-leaf"><a href="#two-elements-swap">Two Elements Swap</a></li>
   </ul>
 
   <p class="footer"></p>
@@ -115,7 +115,7 @@
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;tuples_transformers&quot;</span><span> % </span><span class="string-literal">&quot;0.1.0&quot;</span></code></pre>
         <p>Use import</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">github</span><span>.</span><span class="identifier">mercurievv</span><span>.</span><span class="identifier">minuscles</span><span>.</span><span class="identifier">tuples</span><span>.</span><span class="identifier">transformers</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
-        <p>Let&#39;s create some input trait</p>
+        <p>Let&#39;s create some input data:</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">input</span><span>: ((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))) = ((</span><span class="number-literal">1</span><span>, </span><span class="number-literal">2L</span><span>), (</span><span class="string-literal">&quot;3&quot;</span><span>, (</span><span class="boolean-literal">true</span><span>, </span><span class="number-literal">0.5D</span><span>, </span><span class="string-literal">&quot;6&quot;</span><span>.</span><span class="identifier">charAt</span><span>(</span><span class="number-literal">0</span><span>)), (</span><span class="number-literal">0.7F</span><span>, </span><span class="number-literal">0x8</span><span>)))
 </span><span class="comment">// input: Tuple2[Tuple2[Int, Long], Tuple3[String, Tuple3[Boolean, Double, Char], Tuple2[Float, Byte]]] = (
 //   (1, 2L),
@@ -123,7 +123,7 @@
 // )</span></code></pre>
         <p>Now we will do some transformations: </p>
         
-        <h4 id="flattening-nesting" class="section"><a class="anchor-link left" href="#flattening-nesting"><i class="icofont-laika link">&#xef71;</i></a>flattening, nesting</h4>
+        <h4 id="flattening-nesting" class="section"><a class="anchor-link left" href="#flattening-nesting"><i class="icofont-laika link">&#xef71;</i></a>Flattening, Nesting</h4>
         <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">flatten</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>, </span><span class="type-name">String</span><span>, </span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>, </span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>) = </span><span class="identifier">input</span><span>.</span><span class="identifier">toFlatten</span><span>
 </span><span class="comment">// flatten: Tuple8[Int, Long, String, Boolean, Double, Char, Float, Byte] = (
 //   1,
@@ -147,7 +147,7 @@
 //   (2L, (&quot;3&quot;, (true, (0.5, (&#39;6&#39;, (0.7F, 8))))))
 // )</span></code></pre>
         
-        <h4 id="elements-swap" class="section"><a class="anchor-link left" href="#elements-swap"><i class="icofont-laika link">&#xef71;</i></a>Elements swap</h4>
+        <h4 id="two-elements-swap" class="section"><a class="anchor-link left" href="#two-elements-swap"><i class="icofont-laika link">&#xef71;</i></a>Two Elements Swap</h4>
         <p>Swapping 2 elements of tuple.</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">swapped</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Boolean</span><span>, </span><span class="type-name">String</span><span>, </span><span class="type-name">Long</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>, </span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>) = </span><span class="identifier">flatten</span><span>.</span><span class="identifier">swap</span><span>(</span><span class="number-literal">2</span><span>, </span><span class="number-literal">4</span><span>)
 </span><span class="comment">// swapped: Tuple8[Int, Boolean, String, Long, Double, Char, Float, Byte] = (
