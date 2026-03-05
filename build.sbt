@@ -147,13 +147,14 @@ lazy val opaques = (project in file("modules/opaques"))
 lazy val docs = project
   .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
-  .dependsOn(tuplesTransformers)
+  .dependsOn(tuplesTransformers, opaques)
   .settings(
     crossScalaVersions := Seq(scala3Ver),
     scalaVersion := scala3Ver,
     tlSiteIsTypelevelProject := Some(TypelevelProject.Affiliate),
     mdocVariables := Map(
-      "TUPLES_TRANSFORMERS_VERSION" -> tuplesTransformers.project./(version).value
+      "TUPLES_TRANSFORMERS_VERSION" -> tuplesTransformers.project./(version).value,
+      "OPAQUESS_VERSION" -> opaques.project./(version).value
     ),
   ).settings(NoPublishPlugin.projectSettings)
 
