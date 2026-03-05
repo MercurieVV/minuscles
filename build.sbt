@@ -1,17 +1,20 @@
+val scala3Ver = "3.4.2"
+
 ThisBuild / tlBaseVersion := "0.1"
 ThisBuild / licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))
 ThisBuild / startYear := Some(2025)
 //ThisBuild / headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins"))
 ThisBuild / scalaVersion := "2.13.16"
-ThisBuild / crossScalaVersions := Seq("2.13.16", "3.4.2")
+ThisBuild / crossScalaVersions := Seq("2.13.16", scala3Ver)
 ThisBuild / tlSitePublishBranch := Some("main")
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 //ThisBuild / tlCiReleaseTags := false
 
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
   organization := "io.github.mercurievv.minuscles",
   startYear := Some(2025),
-  crossScalaVersions := Seq("2.13.16", "3.4.2"),
+  crossScalaVersions := Seq("2.13.16", scala3Ver),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
   sonatypeProfileName := "io.github.mercurievv",
@@ -38,7 +41,7 @@ lazy val root = (project in file("."))
     publishArtifact := false,
     publishTo := None,
   )
-  .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses, tuplesTransformers, docs)
+  .aggregate(monocleTuples, conversions, fieldsNames, shapeless3typeclasses, tuplesTransformers, opaques, docs)
 
 //todo use tuplesTransformers. This lib should apply tuplesTransformers for monocle only
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
@@ -67,8 +70,8 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
     version := "0.1.0",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
-    crossScalaVersions := Seq("3.4.2"),
-    scalaVersion := "3.4.2",
+    crossScalaVersions := Seq(scala3Ver),
+    scalaVersion := scala3Ver,
     libraryDependencies ++= Seq(
       "org.typelevel" %% "munit-cats-effect" % "2.0.0"  % Test,
       "org.typelevel" %% "discipline-munit"  % "2.0.0"  % Test,
@@ -108,8 +111,8 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
     version := "0.1.0",
     isSnapshot := false,
     description := "Typeclasses for shapeless 3",
-    crossScalaVersions := Seq("3.4.2"),
-    scalaVersion := "3.4.2",
+    crossScalaVersions := Seq(scala3Ver),
+    scalaVersion := scala3Ver,
   )
   .settings(
     libraryDependencies += "org.typelevel" %% "shapeless3-deriving" % "3.4.3",
@@ -132,18 +135,28 @@ lazy val conversions = (project in file("modules/conversions"))
   .dependsOn(monocleTuples)
   .settings(NoPublishPlugin.projectSettings)
 
+lazy val opaques = (project in file("modules/opaques"))
+  .settings(commonSettings)
+  .settings(
+    name := "opaques",
+    version := "0.1.1",
+    isSnapshot := false,
+    description := "Micro library to create opaque types and companion objects generic way",
+  )
+
 lazy val docs = project
   .in(file("site"))
   .enablePlugins(TypelevelSitePlugin)
   .dependsOn(tuplesTransformers)
   .settings(
-    crossScalaVersions := Seq("3.4.2"),
-    scalaVersion := "3.4.2",
+    crossScalaVersions := Seq(scala3Ver),
+    scalaVersion := scala3Ver,
     tlSiteIsTypelevelProject := Some(TypelevelProject.Affiliate),
     mdocVariables := Map(
       "TUPLES_TRANSFORMERS_VERSION" -> tuplesTransformers.project./(version).value
     ),
-  )
+  ).settings(NoPublishPlugin.projectSettings)
+
 
 /*
 lazy val docs = project // new documentation project
@@ -151,8 +164,8 @@ lazy val docs = project // new documentation project
   .dependsOn(tuplesTransformers)
   .enablePlugins(MdocPlugin)
   .settings(
-    crossScalaVersions := Seq("3.4.2"),
-    scalaVersion := "3.4.2",
+    crossScalaVersions := Seq(scala3Ver),
+    scalaVersion := scala3Ver,
     mdocVariables := Map(
       "VERSION" -> tuplesTransformers.project./(version).value
     )
