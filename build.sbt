@@ -63,7 +63,7 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
 lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
   .settings(commonSettings)
   .settings(
-    name := "tuples_transformers",
+    name := "tuples-transformers",
     version := "0.1.0",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",

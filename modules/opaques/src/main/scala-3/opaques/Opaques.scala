@@ -19,6 +19,17 @@ package io.github.mercurievv.minuscles.opaques
 import scala.language.implicitConversions
 import scala.compiletime.{constValue, erasedValue, summonInline}
 
+/** Defines an opaque type wrapper with conversion utilities.
+  *
+  * Example:
+  * {{{
+  * object UserName extends Opaque[String]
+  *
+  * val userName    = UserName("MercurieVV")
+  * val userNameStr = UserName.unwrap(userName)
+  * assert(userNameStr == "MercurieVV")
+  * }}}
+  */
 trait Opaque[Raw]:
   opaque type Opq = Raw
 
