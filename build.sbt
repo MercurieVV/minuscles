@@ -10,6 +10,8 @@ ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 //ThisBuild / tlCiReleaseTags := false
 
+addCommandAlias("prePush", "; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc")
+
 val commonSettings = Seq(
   scalaVersion := "2.13.16",
   organization := "io.github.mercurievv.minuscles",
@@ -157,10 +159,10 @@ lazy val docs = project
     tlSiteIsTypelevelProject := Some(TypelevelProject.Affiliate),
     mdocVariables := Map(
       "TUPLES_TRANSFORMERS_VERSION" -> tuplesTransformers.project./(version).value,
-      "OPAQUESS_VERSION" -> opaques.project./(version).value
+      "OPAQUES_VERSION"             -> opaques.project./(version).value,
     ),
-  ).settings(NoPublishPlugin.projectSettings)
-
+  )
+  .settings(NoPublishPlugin.projectSettings)
 
 /*
 lazy val docs = project // new documentation project
@@ -180,7 +182,7 @@ import scala.sys.process._
 
 lazy val isAlreadyPublished = Def.setting {
   val org  = organization.value
-  val name = moduleName.value  // includes _2.13 / _3 suffix for cross-compiled artifacts
+  val name = moduleName.value // includes _2.13 / _3 suffix for cross-compiled artifacts
   val ver  = version.value
   if (isSnapshot.value) false
   else isPublished(org, name, ver)

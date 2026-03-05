@@ -30,5 +30,4 @@ trait Opaque[Raw]:
     inline implicit def opqToRaw(t: Opq): Raw = t
 
 object Opaque:
-  def create[Raw] = new Opaque[Raw]{}
-
+  def create[Raw] = new Opaque[Raw] {}
