@@ -195,11 +195,12 @@ jobs:
       - name: Submit Dependencies
         uses: scalacenter/sbt-dependency-submission@v2
         with:
-          modules-ignore: tuples_plens_2.13 tuples_plens_3 fields_names_2.13 fields_names_3 docs_3 docs_3 shapeless3-typeclasses_3 conversions_2.13 conversions_3
+          modules-ignore: tuples_plens_2.13 tuples_plens_3 fields_names_2.13 fields_names_3 docs_3 shapeless3-typeclasses_3 conversions_2.13 conversions_3
           configs-ignore: test scala-tool scala-doc-tool test-internal
 
   site:
     name: Generate Site
+    needs: [build]
     strategy:
       matrix:
         os: [ubuntu-22.04]

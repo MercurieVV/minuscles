@@ -3,7 +3,6 @@ val scala3Ver = "3.4.2"
 ThisBuild / tlBaseVersion := "0.1"
 ThisBuild / licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0"))
 ThisBuild / startYear := Some(2025)
-//ThisBuild / headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins"))
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", scala3Ver)
 ThisBuild / tlSitePublishBranch := Some("main")
@@ -13,10 +12,7 @@ ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 addCommandAlias("prePush", "; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc")
 
 val commonSettings = Seq(
-  scalaVersion := "2.13.16",
   organization := "io.github.mercurievv.minuscles",
-  startYear := Some(2025),
-  crossScalaVersions := Seq("2.13.16", scala3Ver),
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
   publishTo := sonatypePublishToBundle.value,
   sonatypeProfileName := "io.github.mercurievv",
@@ -26,13 +22,11 @@ val commonSettings = Seq(
       case Some((2, 13)) => Seq("-Xsource:3", "-Xfatal-warnings")
     }
   },
-  licenses += ("Apache-2.0", url("https://www.apache.org/licenses/LICENSE-2.0")),
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
   tlCiReleaseTags := false,
   tlCiMimaBinaryIssueCheck := false,
   mimaFailOnNoPrevious := false,
   mimaReportBinaryIssues := false,
-  // tlCiMimaBinaryIssueCheck := false,
   publish / skip := isAlreadyPublished.value,
 )
 lazy val root = (project in file("."))

@@ -16,6 +16,7 @@
 
 package io.github.mercurievv.minuscles.opaques
 
+import scala.language.implicitConversions
 import scala.compiletime.{constValue, erasedValue, summonInline}
 
 trait Opaque[Raw]:
