@@ -5,7 +5,7 @@ It's Scala 3 only.
 
 To install
 ```scala
-libraryDependencies += "io.github.mercurievv.minuscles" % "tuples_transformers" % "@TUPLES_TRANSFORMERS_VERSION@"
+libraryDependencies += "io.github.mercurievv.minuscles" % "tuples-transformers" % "@TUPLES_TRANSFORMERS_VERSION@"
 ```
 
 Use import

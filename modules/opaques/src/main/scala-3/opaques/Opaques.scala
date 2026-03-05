@@ -23,6 +23,9 @@ import scala.compiletime.{constValue, erasedValue, summonInline}
   *
   * Example:
   * {{{
+  * val UserName = Opaque.create[String]
+  * type UserName = UserName.Opq
+  *
   * object UserName extends Opaque[String]
   *
   * val userName    = UserName("MercurieVV")

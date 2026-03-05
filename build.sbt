@@ -9,7 +9,12 @@ ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 //ThisBuild / tlCiReleaseTags := false
 
-addCommandAlias("prePush", "; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc")
+val checkNamingConvention = taskKey[Unit]("Verify artifact name follows kebab-case convention")
+
+addCommandAlias(
+  "prePush",
+  "; checkNamingConvention; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc",
+)
 
 val commonSettings = Seq(
   organization := "io.github.mercurievv.minuscles",
@@ -24,9 +29,14 @@ val commonSettings = Seq(
   },
   headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
   tlCiReleaseTags := false,
-  tlCiMimaBinaryIssueCheck := false,
+  tlCiMimaBinaryIssueCheck := true,
   mimaFailOnNoPrevious := false,
-  mimaReportBinaryIssues := false,
+  checkNamingConvention := {
+    val name      = moduleName.value
+    val kebabCase = "^[a-z][a-z0-9]*(-[a-z0-9]+)*$".r
+    if (kebabCase.findFirstIn(name).isEmpty)
+      sys.error(s"Artifact '$name' is not kebab-case. Use lowercase letters, digits, and hyphens only.")
+  },
   publish / skip := isAlreadyPublished.value,
 )
 lazy val root = (project in file("."))
@@ -44,8 +54,8 @@ lazy val root = (project in file("."))
 lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(commonSettings)
   .settings(
-    name := "tuples_plens",
-    version := "0.1.3",
+    name := "tuples-plens",
+    version := "0.1.4",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     Compile / sourceGenerators += Def.task {
@@ -64,7 +74,7 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
   .settings(commonSettings)
   .settings(
     name := "tuples-transformers",
-    version := "0.1.0",
+    version := "0.1.1",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     crossScalaVersions := Seq(scala3Ver),
@@ -79,8 +89,8 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
 lazy val fieldsNames = (project in file("modules/fields-names"))
   .settings(commonSettings)
   .settings(
-    name := "fields_names",
-    version := "0.1.0",
+    name := "fields-names",
+    version := "0.1.1",
     isSnapshot := false,
     description := "Micro library generate object containing its fields names",
   )
