@@ -31,6 +31,7 @@ val commonSettings = Seq(
   mimaFailOnNoPrevious := false,
   mimaReportBinaryIssues := false,
   // tlCiMimaBinaryIssueCheck := false,
+  publish / skip := isAlreadyPublished.value,
 )
 lazy val root = (project in file("."))
   .settings(
@@ -142,6 +143,8 @@ lazy val opaques = (project in file("modules/opaques"))
     version := "0.1.1",
     isSnapshot := false,
     description := "Micro library to create opaque types and companion objects generic way",
+    crossScalaVersions := Seq(scala3Ver),
+    scalaVersion := scala3Ver,
   )
 
 lazy val docs = project
@@ -175,21 +178,12 @@ lazy val docs = project // new documentation project
 
 import scala.sys.process._
 
-lazy val checkAndSetPublishSettings = Def.setting {
-  publish / skip := {
-    val org  = organization.value
-    val name = moduleName.value
-    val ver  = version.value
-
-    if (isPublished(org, name, ver)) {
-      println(s"Skipping publish for $name $ver, already published.")
-      NoPublishPlugin.projectSettings // This prevents publishing the subproject
-    } else {
-      println(s"Publishing $name $ver, as it's not published yet.")
-      Seq.empty
-    }
-    isPublished(org, name, ver)
-  }
+lazy val isAlreadyPublished = Def.setting {
+  val org  = organization.value
+  val name = moduleName.value  // includes _2.13 / _3 suffix for cross-compiled artifacts
+  val ver  = version.value
+  if (isSnapshot.value) false
+  else isPublished(org, name, ver)
 }
 
 def isPublished(organization: String, name: String, version: String): Boolean = {
