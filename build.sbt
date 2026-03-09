@@ -74,7 +74,7 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
   .settings(commonSettings)
   .settings(
     name := "tuples-transformers",
-    version := "0.1.1",
+    version := "0.2.1",
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     crossScalaVersions := Seq(scala3Ver),

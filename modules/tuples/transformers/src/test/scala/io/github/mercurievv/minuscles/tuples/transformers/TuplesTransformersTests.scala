@@ -23,6 +23,7 @@ import io.github.mercurievv.minuscles.tuples.transformers.all.*
 import io.github.mercurievv.minuscles.tuples.transformers.compiletime.swapValues
 
 import scala.annotation.nowarn
+import scala.compiletime.testing.typeChecks
 
 class TuplesTransformersTests extends Laws {
   // todo extract from class, pass as arguments
@@ -63,5 +64,49 @@ class TuplesTransformersTests extends Laws {
           .elementsChanged(inp, 2)
       }
     },
+    "map reorder - type checking" -> Prop.forAll { (inp: (String, Int, Double)) =>
+      val result: (Int, Double, String) = reorder[(String, Int, Double), (Int, Double, String)](inp)
+      result == (inp._2, inp._3, inp._1)
+    },
+    "map reorder - contains same elements" -> Prop.forAll { (inp: (String, Int, Double)) =>
+      TupleElementsLaws[(String, Int, Double), (Int, Double, String)](
+        reorder[(String, Int, Double), (Int, Double, String)](_)
+      ).containsSameElements(inp)
+    },
+    "mapTo reorder - type checking" -> Prop.forAll { (inp: (String, Int, Double)) =>
+      val result: (Int, Double, String) = inp.reorderTo[(Int, Double, String)]
+      result == (inp._2, inp._3, inp._1)
+    },
+    "map reorder - identity permutation" -> Prop.forAll { (inp: (String, Int, Double)) =>
+      val result: (String, Int, Double) = reorder[(String, Int, Double), (String, Int, Double)](inp)
+      result == inp
+    },
+    "map reorder - reverse permutation" -> Prop.forAll { (inp: (String, Int, Double)) =>
+      val result: (Double, Int, String) = reorder[(String, Int, Double), (Double, Int, String)](inp)
+      result == (inp._3, inp._2, inp._1)
+    },
+    "map rejects duplicate types in source" -> Prop(
+      !typeChecks("""
+        import io.github.mercurievv.minuscles.tuples.transformers.all.*
+        val bad: (String, Int, String) = ("a", 1, "b")
+        reorder[(String, Int, String), (Int, String)](bad)
+      """)
+    ),
+    "fromFlatten round-trips with flatten" -> Prop.forAll { (inp: TestType) =>
+      fromFlatten[TestType](inp.toFlatten) == inp
+    },
+    "fromNestedR round-trips with toNestedR" -> Prop.forAll { (inp: TestType) =>
+      fromNestedR[TestType](inp.toNestedR) == inp
+    },
+    "fromFlatten on already-flat tuple is identity" -> Prop.forAll { (inp: TestTypeFlatten) =>
+      fromFlatten[TestTypeFlatten](inp.toFlatten) == inp
+    },
+    "map accepts distinct types in source" -> Prop(
+      typeChecks("""
+        import io.github.mercurievv.minuscles.tuples.transformers.all.*
+        val ok: (String, Int, Double) = ("a", 1, 2.0)
+        reorder[(String, Int, Double), (Int, String)](ok)
+      """)
+    ),
   )
 }

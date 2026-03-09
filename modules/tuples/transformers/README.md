@@ -1,22 +1,14 @@
 # Micro library to modify tuples structure and their types
 
-Scala 3 supported.
+Scala only 3 supported.
 
-Include in project:
-```scala
-libraryDependencies += "io.github.mercurievv.minuscles" %% "tuples_transformers" % "0.1.0"
-```
+see docs here: https://mercurievv.github.io/minuscles/tuples-transformers.html
 
-Example:
-```scala
-import io.github.mercurievv.minuscles.tuples.transformers.all.*
+## What's new
 
-val inp: ((Int, Long), (String, (Boolean, Double, Char), (Float, Byte))) = ??? //don't care about value, but its working
+### v 0.2.1
 
-//following tranformations:
-val flatten: (Int, Long, String, Boolean, Double, Char, Float, Byte) = inp.toFlatten
-val flattenToNested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = flatToNested(gr) 
-//flatToNested method works correctly only with flattened tuples, but in such cases it should save some CPU
-val nested: (Int, (Long, (String, (Boolean, (Double, (Char, (Float, Byte))))))) = inp.toNested
-
-```
+* `fromFlatten` — reconstruct nested structure from a flat tuple. Inverse of `toFlatten`. Given the target type `T`, reconstructs the original nesting from a flat tuple.
+* `fromNestedR` — reconstruct original structure from a nested-right tuple. Inverse of `toNestedR`. Converts a right-nested tuple back to any target structure `T`.
+* `reorder` — reorder elements by type. Reorders tuple elements to match a specified target type. Element types must be unique (enforced at compile time).
+* `requireDistinct` — checks that tuple have only unique types.
