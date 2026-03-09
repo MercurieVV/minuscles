@@ -101,6 +101,10 @@
   <ul class="nav-list">
     <li class="level1 nav-leaf"><a href="#flattening-nesting">Flattening, Nesting</a></li>
     <li class="level1 nav-leaf"><a href="#two-elements-swap">Two Elements Swap</a></li>
+    <li class="level1 nav-leaf"><a href="#unflatten">Unflatten</a></li>
+    <li class="level1 nav-leaf"><a href="#from-nested-right">From Nested-Right</a></li>
+    <li class="level1 nav-leaf"><a href="#reorder-by-type">Reorder by Type</a></li>
+    <li class="level1 nav-leaf"><a href="#distinct-types-constraint">Distinct types constraint</a></li>
   </ul>
 
   <p class="footer"></p>
@@ -113,7 +117,7 @@
         <p>This is mini project to transform tuple and its types.</p>
         <p>It&#39;s Scala 3 only.</p>
         <p>To install</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;tuples-transformers&quot;</span><span> % </span><span class="string-literal">&quot;0.1.1&quot;</span></code></pre>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;tuples-transformers&quot;</span><span> % </span><span class="string-literal">&quot;0.2.1&quot;</span></code></pre>
         <p>Use import</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">github</span><span>.</span><span class="identifier">mercurievv</span><span>.</span><span class="identifier">minuscles</span><span>.</span><span class="identifier">tuples</span><span>.</span><span class="identifier">transformers</span><span>.</span><span class="identifier">all</span><span>.*</span></code></pre>
         <p>Let&#39;s create some input data:</p>
@@ -161,6 +165,111 @@
 //   0.7F,
 //   8
 // )</span></code></pre>
+        
+        <h4 id="unflatten" class="section"><a class="anchor-link left" href="#unflatten"><i class="icofont-laika link">&#xef71;</i></a>Unflatten</h4>
+        <p>Reconstruct the original nested structure from a flat tuple.</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">fromFlattenV</span><span>: ((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))) = </span><span class="identifier">fromFlatten</span><span>[((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>)))](</span><span class="identifier">flatten</span><span>)
+</span><span class="comment">// fromFlattenV: Tuple2[Tuple2[Int, Long], Tuple3[String, Tuple3[Boolean, Double, Char], Tuple2[Float, Byte]]] = (
+//   (1, 2L),
+//   (&quot;3&quot;, (true, 0.5, &#39;6&#39;), (0.7F, 8))
+// )</span></code></pre>
+        
+        <h4 id="from-nested-right" class="section"><a class="anchor-link left" href="#from-nested-right"><i class="icofont-laika link">&#xef71;</i></a>From Nested-Right</h4>
+        <p>Reconstruct the original structure from a nested-right tuple.</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">fromNested</span><span>: ((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>))) = </span><span class="identifier">fromNestedR</span><span>[((</span><span class="type-name">Int</span><span>, </span><span class="type-name">Long</span><span>), (</span><span class="type-name">String</span><span>, (</span><span class="type-name">Boolean</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">Char</span><span>), (</span><span class="type-name">Float</span><span>, </span><span class="type-name">Byte</span><span>)))](</span><span class="identifier">nested</span><span>)
+</span><span class="comment">// fromNested: Tuple2[Tuple2[Int, Long], Tuple3[String, Tuple3[Boolean, Double, Char], Tuple2[Float, Byte]]] = (
+//   (1, 2L),
+//   (&quot;3&quot;, (true, 0.5, &#39;6&#39;), (0.7F, 8))
+// )</span></code></pre>
+        
+        <h4 id="reorder-by-type" class="section"><a class="anchor-link left" href="#reorder-by-type"><i class="icofont-laika link">&#xef71;</i></a>Reorder by Type</h4>
+        <p>Reorder tuple elements by specifying the desired output type. All element types must be unique.</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">t</span><span> = (</span><span class="string-literal">&quot;hello&quot;</span><span>, </span><span class="number-literal">42</span><span>, </span><span class="number-literal">3.14</span><span>)
+</span><span class="comment">// t: Tuple3[String, Int, Double] = (&quot;hello&quot;, 42, 3.14)
+</span><span class="keyword">val</span><span> </span><span class="identifier">reordered</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">String</span><span>) = </span><span class="identifier">reorder</span><span>[(</span><span class="type-name">String</span><span>, </span><span class="type-name">Int</span><span>, </span><span class="type-name">Double</span><span>), (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">String</span><span>)](</span><span class="identifier">t</span><span>)
+</span><span class="comment">// reordered: Tuple3[Int, Double, String] = (42, 3.14, &quot;hello&quot;)
+</span><span class="keyword">val</span><span> </span><span class="identifier">reorderedExt</span><span>: (</span><span class="type-name">Int</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">String</span><span>) = </span><span class="identifier">t</span><span>.</span><span class="identifier">reorderTo</span><span>[(</span><span class="type-name">Int</span><span>, </span><span class="type-name">Double</span><span>, </span><span class="type-name">String</span><span>)]
+</span><span class="comment">// reorderedExt: Tuple3[Int, Double, String] = (42, 3.14, &quot;hello&quot;)</span></code></pre>
+        <p>Duplicate types in the source are rejected at compile time:</p>
+        <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">bad</span><span>: (</span><span class="type-name">String</span><span>, </span><span class="type-name">Int</span><span>, </span><span class="type-name">String</span><span>) = (</span><span class="string-literal">&quot;a&quot;</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="string-literal">&quot;b&quot;</span><span>)
+</span><span class="identifier">reorder</span><span>[(</span><span class="type-name">String</span><span>, </span><span class="type-name">Int</span><span>, </span><span class="type-name">String</span><span>), (</span><span class="type-name">Int</span><span>, </span><span class="type-name">String</span><span>)](</span><span class="identifier">bad</span><span>)
+</span><span class="comment">// error:
+// No given instance of type io.github.mercurievv.minuscles.tuples.transformers.all.IsDistinct[(String, Int,
+//   String)] was found for parameter d of method reorder in object all.
+// I found:
+// 
+//     io.github.mercurievv.minuscles.tuples.transformers.all.IsDistinct.consDistinct[
+//       String, (Int, String)](
+//       /* missing */
+//         summon[
+//           scala.util.NotGiven[
+//             io.github.mercurievv.minuscles.tuples.transformers.all.TupleIndex[
+//               (Int, String), String]
+//           ]
+//         ]
+//       ,
+//     ???)
+// 
+// But no implicit values were found that match type scala.util.NotGiven[
+//   io.github.mercurievv.minuscles.tuples.transformers.all.TupleIndex[
+//     (Int, String), String]
+// ].
+// reorder[(String, Int, String), (Int, String)](bad)
+//                                                  ^</span></code></pre>
+        
+        <h4 id="distinct-types-constraint" class="section"><a class="anchor-link left" href="#distinct-types-constraint"><i class="icofont-laika link">&#xef71;</i></a>Distinct types constraint</h4>
+        <p><code>IsDistinct[T]</code> is a typeclass witness that all element types in <code>T</code> are unique.
+        It is used automatically by <code>reorder</code>/<code>reorderTo</code>, but can also be used as a constraint in your own code.</p>
+        <p>Require a distinct tuple at a call site:</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">distinct</span><span> = </span><span class="identifier">t</span><span>.</span><span class="identifier">requireDistinct</span><span>  </span><span class="comment">// compiles — (String, Int, Double) has unique types
+// distinct: Tuple3[String, Int, Double] = (&quot;hello&quot;, 42, 3.14)</span></code></pre>
+        <pre><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">bad2</span><span>: (</span><span class="type-name">String</span><span>, </span><span class="type-name">Int</span><span>, </span><span class="type-name">String</span><span>) = (</span><span class="string-literal">&quot;a&quot;</span><span>, </span><span class="number-literal">1</span><span>, </span><span class="string-literal">&quot;b&quot;</span><span>)
+</span><span class="identifier">bad2</span><span>.</span><span class="identifier">requireDistinct</span><span>
+</span><span class="comment">// error:
+// value requireDistinct is not a member of (String, Int, String).
+// An extension method was tried, but could not be fully constructed:
+// 
+//     io.github.mercurievv.minuscles.tuples.transformers.all.requireDistinct[
+//       (String, Int, String)](repl.MdocSession.MdocApp.bad2)(
+//       io.github.mercurievv.minuscles.tuples.transformers.all.IsDistinct.consDistinct
+//         [String, (Int, String)](
+//         /* missing */
+//           summon[
+//             scala.util.NotGiven[
+//               io.github.mercurievv.minuscles.tuples.transformers.all.TupleIndex[
+//                 (Int, String), String]
+//             ]
+//           ]
+//         ,
+//       ???)
+//     )
+// 
+//     failed with:
+// 
+//         No given instance of type io.github.mercurievv.minuscles.tuples.transformers.all.IsDistinct[
+//           (String, Int, String)] was found for parameter x$2 of method requireDistinct in object all.
+//         I found:
+//         
+//             io.github.mercurievv.minuscles.tuples.transformers.all.IsDistinct.consDistinct[
+//               String, (Int, String)](
+//               /* missing */
+//                 summon[
+//                   scala.util.NotGiven[
+//                     io.github.mercurievv.minuscles.tuples.transformers.all.TupleIndex[
+//                       (Int, String), String]
+//                   ]
+//                 ]
+//               ,
+//             ???)
+//         
+//         But no implicit values were found that match type scala.util.NotGiven[
+//           io.github.mercurievv.minuscles.tuples.transformers.all.TupleIndex[
+//             (Int, String), String]
+//         ].
+// bad2.requireDistinct
+// ^^^^^^^^^^^^^^^^^^^^</span></code></pre>
+        <p>Use as a constraint in your own function:</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">def</span><span> </span><span class="declaration-name">processDistinct</span><span>[</span><span class="type-name">T</span><span> &lt;: </span><span class="type-name">Tuple</span><span>](</span><span class="identifier">t</span><span>: </span><span class="type-name">T</span><span>)(</span><span class="keyword">using</span><span> </span><span class="type-name">IsDistinct</span><span>[</span><span class="type-name">T</span><span>]): </span><span class="type-name">String</span><span> = </span><span class="identifier">t</span><span>.</span><span class="identifier">toString</span></code></pre>
 
         
 <hr class="footer-rule"/>
