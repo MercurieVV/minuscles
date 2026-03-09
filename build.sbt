@@ -31,6 +31,10 @@ val commonSettings = Seq(
   tlCiReleaseTags := false,
   tlCiMimaBinaryIssueCheck := true,
   mimaFailOnNoPrevious := false,
+  // sbt-typelevel overrides mimaPreviousArtifacts from git tags, including tags for
+  // versions that were tagged but never published. Override explicitly to suppress
+  // download failures for non-existent Maven artifacts.
+  mimaPreviousArtifacts := Set.empty,
   checkNamingConvention := {
     val name      = moduleName.value
     val kebabCase = "^[a-z][a-z0-9]*(-[a-z0-9]+)*$".r
