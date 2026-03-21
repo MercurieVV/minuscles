@@ -162,6 +162,7 @@ lazy val opaques = (project in file("modules/opaques"))
     crossScalaVersions := Seq(scala3Ver),
     scalaVersion := scala3Ver,
   )
+  .settings(NoPublishPlugin.projectSettings)
 
 lazy val docs = project
   .in(file("site"))
