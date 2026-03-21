@@ -1,7 +1,5 @@
 ThisBuild / organization := "io.github.mercurievv.minuscles"
 ThisBuild / organizationHomepage := Some(url("https://github.com/MercurieVV/"))
-ThisBuild / sonatypeCredentialHost := "s01.oss.sonatype.org"
-sonatypeProfileName := "io.github.mercurievv"
 
 ThisBuild / scmInfo := Some(
   ScmInfo(
@@ -26,14 +24,6 @@ ThisBuild / homepage := Some(url("https://github.com/MercurieVV/minuscles"))
 // Remove all additional repository other than Maven Central from POM
 ThisBuild / pomIncludeRepository := { _ => false }
 
-ThisBuild / publishTo := {
-  val nexus = "https://s01.oss.sonatype.org/"
-  if (false) Some("snapshots" at nexus + "content/repositories/snapshots/")
-  else Some("releases" at nexus + "service/local/staging/deploy/maven2/")
-}
-
 ThisBuild / publishMavenStyle := true
 
 ThisBuild / versionScheme := Some("early-semver")
-
-ThisBuild / pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray)
