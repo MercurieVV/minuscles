@@ -6,6 +6,7 @@ ThisBuild / startYear := Some(2025)
 ThisBuild / scalaVersion := "2.13.16"
 ThisBuild / crossScalaVersions := Seq("2.13.16", scala3Ver)
 ThisBuild / tlSitePublishBranch := Some("main")
+ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 //ThisBuild / tlCiReleaseTags := false
 
