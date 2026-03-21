@@ -20,7 +20,6 @@ addCommandAlias(
 val commonSettings = Seq(
   organization := "io.github.mercurievv.minuscles",
   pgpPassphrase := sys.env.get("GPG_PASSPHRASE").map(_.toArray),
-
   scalacOptions ++= {
     CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((3, _))  => Seq("-Xmax-inlines:64", "-Werror")
