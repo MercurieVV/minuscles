@@ -13,7 +13,7 @@ val checkNamingConvention = taskKey[Unit]("Verify artifact name follows kebab-ca
 
 addCommandAlias(
   "prePush",
-  "; checkNamingConvention; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc",
+  "; checkNamingConvention; headerCheckAll; scalafmtCheckAll; scalafmtSbtCheck; +test; docs/mdoc; mimaReportBinaryIssues",
 )
 
 val commonSettings = Seq(
@@ -60,6 +60,7 @@ lazy val monocleTuples = (project in file("modules/tuples/plens"))
   .settings(
     name := "tuples-plens",
     version := "0.1.4",
+    mimaPreviousArtifacts := Set(organization.value %% name.value % "0.1.4"),
     isSnapshot := false,
     description := "Micro library to modify tuples elements and their types",
     Compile / sourceGenerators += Def.task {
@@ -80,6 +81,7 @@ lazy val tuplesTransformers = (project in file("modules/tuples/transformers"))
     name := "tuples-transformers",
     version := "0.2.1",
     isSnapshot := false,
+    mimaPreviousArtifacts := Set.empty, // Set(organization.value %% name.value % "0.2.1"),
     description := "Micro library to modify tuples elements and their types",
     crossScalaVersions := Seq(scala3Ver),
     scalaVersion := scala3Ver,
@@ -95,6 +97,7 @@ lazy val fieldsNames = (project in file("modules/fields-names"))
   .settings(
     name := "fields-names",
     version := "0.1.1",
+    mimaPreviousArtifacts := Set(organization.value %% name.value % "0.1.1"),
     isSnapshot := false,
     description := "Micro library generate object containing its fields names",
   )
@@ -120,6 +123,7 @@ lazy val shapeless3typeclasses = (project in file("modules/shapeless3-typeclasse
   .settings(
     name := "shapeless3-typeclasses",
     version := "0.1.0",
+    mimaPreviousArtifacts := Set(organization.value %% name.value % "0.1.0"),
     isSnapshot := false,
     description := "Typeclasses for shapeless 3",
     crossScalaVersions := Seq(scala3Ver),
@@ -136,6 +140,7 @@ lazy val conversions = (project in file("modules/conversions"))
   .settings(
     name := "conversions",
     version := "0.1.1",
+    mimaPreviousArtifacts := Set(organization.value %% name.value % "0.1.1"),
     isSnapshot := false,
     description := "Micro library to modify things generic way",
   )
@@ -152,6 +157,7 @@ lazy val opaques = (project in file("modules/opaques"))
     name := "opaques",
     version := "0.2.0",
     isSnapshot := false,
+    mimaPreviousArtifacts := Set(organization.value %% name.value % "0.1.1"),
     description := "Micro library to create opaque types and companion objects generic way",
     crossScalaVersions := Seq(scala3Ver),
     scalaVersion := scala3Ver,
