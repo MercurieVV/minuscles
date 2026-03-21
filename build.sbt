@@ -8,18 +8,7 @@ ThisBuild / crossScalaVersions := Seq("2.13.16", scala3Ver)
 ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
-ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(
-    List("tlCiRelease", "sonatypeCentralUpload"),
-    name = Some("Publish Artifacts"),
-    env = Map(
-      "SONATYPE_USERNAME"        -> "${{ secrets.SONATYPE_USERNAME }}",
-      "SONATYPE_PASSWORD"        -> "${{ secrets.SONATYPE_PASSWORD }}",
-      "SONATYPE_CREDENTIAL_HOST" -> "${{ secrets.SONATYPE_CREDENTIAL_HOST }}",
-    ),
-  )
-)
-//ThisBuild / tlCiReleaseTags := false
+ThisBuild / tlCiReleaseTags := false
 
 val checkNamingConvention = taskKey[Unit]("Verify artifact name follows kebab-case convention")
 
@@ -38,7 +27,6 @@ val commonSettings = Seq(
     }
   },
   headerLicense := Some(HeaderLicense.ALv2("2025-2026", "Viktors Kalinins")),
-  tlCiReleaseTags := false,
   tlCiMimaBinaryIssueCheck := true,
 //  mimaFailOnNoPrevious := false,
   // sbt-typelevel overrides mimaPreviousArtifacts from git tags, including tags for
