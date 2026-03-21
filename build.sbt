@@ -10,7 +10,7 @@ ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 ThisBuild / githubWorkflowPublish := Seq(
   WorkflowStep.Sbt(
-    List("tlCiRelease", "sonaUpload"),
+    List("+publishSigned", "sonaUpload"),
     name = Some("Publish Artifacts"),
     env = Map(
       "SONATYPE_USERNAME"        -> "${{ secrets.SONATYPE_USERNAME }}",
