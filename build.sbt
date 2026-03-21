@@ -205,7 +205,7 @@ lazy val isAlreadyPublished = Def.setting {
 
 def isPublished(organization: String, name: String, version: String): Boolean = {
   val url = s"https://repo1.maven.org/maven2/${organization.replace('.', '/')}/$name/$version/$name-$version.pom"
-  try {
+  try { //
     val exitCode = Seq("curl", "--head", "--fail", url).!
     println(s"exitCode = ${exitCode}")
     exitCode == 0
