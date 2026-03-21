@@ -9,6 +9,10 @@ ThisBuild / tlSitePublishBranch := Some("main")
 ThisBuild / tlCiReleaseBranches := Seq("main")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec.temurin("11"))
 ThisBuild / githubWorkflowPublish := Seq(
+  WorkflowStep.Run(
+    List("echo 'pinentry-mode loopback' >> ~/.gnupg/gpg.conf"),
+    name = Some("Configure GPG"),
+  ),
   WorkflowStep.Sbt(
     List("+publishSigned", "sonaUpload"),
     name = Some("Publish Artifacts"),
@@ -16,8 +20,10 @@ ThisBuild / githubWorkflowPublish := Seq(
       "SONATYPE_USERNAME"        -> "${{ secrets.SONATYPE_USERNAME }}",
       "SONATYPE_PASSWORD"        -> "${{ secrets.SONATYPE_PASSWORD }}",
       "SONATYPE_CREDENTIAL_HOST" -> "${{ secrets.SONATYPE_CREDENTIAL_HOST }}",
+      "PGP_PASSPHRASE"           -> "${{ secrets.PGP_PASSPHRASE }}",
+      "GPG_PASSPHRASE"           -> "${{ secrets.PGP_PASSPHRASE }}",
     ),
-  )
+  ),
 )
 ThisBuild / tlCiReleaseTags := false
 
