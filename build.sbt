@@ -27,14 +27,14 @@ val commonSettings = Seq(
       case Some((2, 13)) => Seq("-Xsource:3", "-Xfatal-warnings")
     }
   },
-  headerLicense := Some(HeaderLicense.ALv2("2025", "Viktors Kalinins")),
+  headerLicense := Some(HeaderLicense.ALv2("2025-2026", "Viktors Kalinins")),
   tlCiReleaseTags := false,
   tlCiMimaBinaryIssueCheck := true,
-  mimaFailOnNoPrevious := false,
+//  mimaFailOnNoPrevious := false,
   // sbt-typelevel overrides mimaPreviousArtifacts from git tags, including tags for
   // versions that were tagged but never published. Override explicitly to suppress
   // download failures for non-existent Maven artifacts.
-  mimaPreviousArtifacts := Set.empty,
+//  mimaPreviousArtifacts := Set.empty,
   checkNamingConvention := {
     val name      = moduleName.value
     val kebabCase = "^[a-z][a-z0-9]*(-[a-z0-9]+)*$".r
@@ -150,7 +150,7 @@ lazy val opaques = (project in file("modules/opaques"))
   .settings(commonSettings)
   .settings(
     name := "opaques",
-    version := "0.1.1",
+    version := "0.2.0",
     isSnapshot := false,
     description := "Micro library to create opaque types and companion objects generic way",
     crossScalaVersions := Seq(scala3Ver),

@@ -23,6 +23,28 @@ Now we will do some mappings:
 #### Opaque object creation and getting back
 ```scala mdoc
 val userName = UserName("MercurieVV")
-val userNameStr = UserName.unwrap(userName)
+val userNameStr = userName.value
 assert(userNameStr == "MercurieVV")
+```
+
+## Opaque functor
+
+Create functor to mark input data
+```scala mdoc
+object Input extends OpaqueFunctor
+type Input[a] = Input.Opq[a]
+```
+
+Now wrap some value
+```scala mdoc
+val inputInt: Input[Int] = Input(5)
+```
+Getting original value
+```scala mdoc
+val myInt: Int = inputInt.value
+```
+
+`Input[Int]` is a distinct type from `Int` — they are not interchangeable:
+```scala mdoc:fail
+val notAnInt: Int = inputInt //won't compile
 ```

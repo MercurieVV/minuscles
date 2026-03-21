@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Viktors Kalinins
+ * Copyright 2025-2026 Viktors Kalinins
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,9 @@ trait Opaque[Raw]:
 
   inline def apply(a: Raw): Opq = a
 
-  inline def unwrap(t: Opq): Raw = t
+  inline def unapply(t: Opq): Raw = t
+
+  extension (t: Opq) def value: Raw = t
 
   object implicits:
     inline implicit def rawToOpq(t: Raw): Opq = t
@@ -46,3 +48,20 @@ trait Opaque[Raw]:
 
 object Opaque:
   def create[Raw] = new Opaque[Raw] {}
+
+  /** Example:
+    * {{{
+    * object In extends OpaqueFunctor
+    * type In[a] = In.F[a]
+    * }}}
+    */
+trait OpaqueFunctor:
+  opaque type Opq[a] = a
+
+  def apply[A](a: A): Opq[A] = a
+
+  def unapply[A](a: Opq[A]): A = a
+
+  extension [A](o: Opq[A]) def value: A = o
+
+  def ap[A, B](ff: Opq[A => B])(fa: Opq[A]): Opq[B] = ff(fa)
