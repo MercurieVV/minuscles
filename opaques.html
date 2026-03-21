@@ -100,6 +100,7 @@
 
   <ul class="nav-list">
     <li class="level1 nav-leaf"><a href="#opaque-object-creation-and-getting-back">Opaque object creation and getting back</a></li>
+    <li class="level1 nav-leaf"><a href="#opaque-functor">Opaque functor</a></li>
   </ul>
 
   <p class="footer"></p>
@@ -112,21 +113,39 @@
         <p>This is mini project to create opaque types, and companion objects.</p>
         <p>It&#39;s Scala 3 only.</p>
         <p>To install</p>
-        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;opaques&quot;</span><span> % </span><span class="string-literal">&quot;0.1.1&quot;</span></code></pre>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="identifier">libraryDependencies</span><span> += </span><span class="string-literal">&quot;io.github.mercurievv.minuscles&quot;</span><span> % </span><span class="string-literal">&quot;opaques&quot;</span><span> % </span><span class="string-literal">&quot;0.2.0&quot;</span></code></pre>
         <p>Use import</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">import</span><span> </span><span class="identifier">io</span><span>.</span><span class="identifier">github</span><span>.</span><span class="identifier">mercurievv</span><span>.</span><span class="identifier">minuscles</span><span>.</span><span class="identifier">opaques</span><span>.*</span></code></pre>
         <p>Let&#39;s create opaque type:</p>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="type-name">UserName</span><span> = </span><span class="type-name">Opaque</span><span>.</span><span class="identifier">create</span><span>[</span><span class="type-name">String</span><span>]
-</span><span class="comment">// UserName: Opaque[String] = io.github.mercurievv.minuscles.opaques.Opaque$$anon$1@35cb32c7
+</span><span class="comment">// UserName: Opaque[String] = io.github.mercurievv.minuscles.opaques.Opaque$$anon$1@51aa5e17
 </span><span class="keyword">type</span><span> </span><span class="type-name">UserName</span><span> = </span><span class="type-name">UserName</span><span>.</span><span class="type-name">Opq</span></code></pre>
         <p>Now we will do some mappings:</p>
         
         <h4 id="opaque-object-creation-and-getting-back" class="section"><a class="anchor-link left" href="#opaque-object-creation-and-getting-back"><i class="icofont-laika link">&#xef71;</i></a>Opaque object creation and getting back</h4>
         <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">userName</span><span> = </span><span class="type-name">UserName</span><span>(</span><span class="string-literal">&quot;MercurieVV&quot;</span><span>)
 </span><span class="comment">// userName: Opq = &quot;MercurieVV&quot;
-</span><span class="keyword">val</span><span> </span><span class="identifier">userNameStr</span><span> = </span><span class="type-name">UserName</span><span>.</span><span class="identifier">unwrap</span><span>(</span><span class="identifier">userName</span><span>)
+</span><span class="keyword">val</span><span> </span><span class="identifier">userNameStr</span><span> = </span><span class="identifier">userName</span><span>.</span><span class="identifier">value</span><span>
 </span><span class="comment">// userNameStr: String = &quot;MercurieVV&quot;
 </span><span class="identifier">assert</span><span>(</span><span class="identifier">userNameStr</span><span> == </span><span class="string-literal">&quot;MercurieVV&quot;</span><span>)</span></code></pre>
+        
+        <h2 id="opaque-functor" class="section"><a class="anchor-link left" href="#opaque-functor"><i class="icofont-laika link">&#xef71;</i></a>Opaque functor</h2>
+        <p>Create functor to mark input data</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">object</span><span> </span><span class="type-name">Input</span><span> </span><span class="keyword">extends</span><span> </span><span class="type-name">OpaqueFunctor</span><span>
+</span><span class="keyword">type</span><span> </span><span class="type-name">Input</span><span>[</span><span class="identifier">a</span><span>] = </span><span class="type-name">Input</span><span>.</span><span class="type-name">Opq</span><span>[</span><span class="identifier">a</span><span>]</span></code></pre>
+        <p>Now wrap some value</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">inputInt</span><span>: </span><span class="type-name">Input</span><span>[</span><span class="type-name">Int</span><span>] = </span><span class="type-name">Input</span><span>(</span><span class="number-literal">5</span><span>)
+</span><span class="comment">// inputInt: Opq[Int] = 5</span></code></pre>
+        <p>Getting original value</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">myInt</span><span>: </span><span class="type-name">Int</span><span> = </span><span class="identifier">inputInt</span><span>.</span><span class="identifier">value</span><span>
+</span><span class="comment">// myInt: Int = 5</span></code></pre>
+        <p><code>Input[Int]</code> is a distinct type from <code>Int</code> — they are not interchangeable:</p>
+        <pre class="keep-together pdf epub"><code class="nohighlight"><span class="keyword">val</span><span> </span><span class="identifier">notAnInt</span><span>: </span><span class="type-name">Int</span><span> = </span><span class="identifier">inputInt</span><span> </span><span class="comment">//won&#39;t compile
+// error:
+// Found:    (repl.MdocSession.MdocApp.inputInt : repl.MdocSession.MdocApp.Input.Opq[Int])
+// Required: Int
+// val notAnInt: Int = inputInt //won&#39;t compile
+//                     ^^^^^^^^</span></code></pre>
 
         
 <hr class="footer-rule"/>
