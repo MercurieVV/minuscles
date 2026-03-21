@@ -26,6 +26,7 @@ ThisBuild / githubWorkflowPublish := Seq(
   ),
 )
 ThisBuild / tlCiReleaseTags := false
+ThisBuild / isSnapshot := false
 
 val checkNamingConvention = taskKey[Unit]("Verify artifact name follows kebab-case convention")
 
